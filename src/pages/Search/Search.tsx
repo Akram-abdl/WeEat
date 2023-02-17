@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import SpoonacularService from '../../services/SpoonacularService';
 
-function SearchRecipes() {
+function Search() {
   const [queryParameters] = useSearchParams();
 
   const searchTerm = queryParameters.get('searchTerm') ?? '';
@@ -38,4 +38,4 @@ function SearchRecipes() {
   );
 }
 
-export default SearchRecipes;
+export default Search;
