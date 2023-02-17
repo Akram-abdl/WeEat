@@ -38,6 +38,8 @@ function NavBar() {
     }
   };
 
+  const { currentUser } = auth;
+  const isUserLoggedIn = !!currentUser;
   return (
     <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
       <Flex h={16} alignItems="center" justifyContent="space-between">
@@ -90,7 +92,11 @@ function NavBar() {
             <MenuList>
               <MenuItem>Favoris</MenuItem>
               <MenuDivider />
-              <MenuItem onClick={handleSignOut}>Déconnexion</MenuItem>
+              {isUserLoggedIn ? (
+                <MenuItem onClick={handleSignOut}>Déconnexion</MenuItem>
+              ) : (
+                <MenuItem onClick={() => navigate('/login')}>Connexion</MenuItem>
+              )}
             </MenuList>
           </Menu>
         </Flex>
