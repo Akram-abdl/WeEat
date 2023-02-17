@@ -8,9 +8,9 @@ import {
   AlertIcon,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { UserCredential } from 'firebase/auth';
-import { auth, createUserDocument, signUpFirebase } from '../../utils/firebaseSetup';
-import { User } from '../../models/User';
+import { User as UserFirebase } from 'firebase/auth';
+import { auth, createOrUpdateUserDocument, signUpFirebase } from '../../utils/firebaseSetup';
+import { User as UserModel } from '../../models/User';
 
 export default function Register() {
   const [email, setEmail] = useState('');
@@ -21,10 +21,10 @@ export default function Register() {
   const handleRegister: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault();
     try {
-      const myUser: UserCredential = await signUpFirebase(auth, email, password);
-
+      await signUpFirebase(auth, email, password);
+      const myUser: UserFirebase = auth.currentUser as UserFirebase;
       // create a new user in Firebase Firestore with default values
-      const newUser: User = {
+      const newUser: UserModel = {
         favorites: [''],
         intolerances: [''],
         isVegan: false,
@@ -32,7 +32,7 @@ export default function Register() {
       };
 
       console.log('newUser', newUser, 'myUser', myUser);
-      createUserDocument(myUser, newUser);
+      createOrUpdateUserDocument(myUser, newUser);
       navigate('/login');
     } catch (error: any) {
       setErrorMessage(error.message);
