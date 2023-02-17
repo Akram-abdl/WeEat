@@ -8,23 +8,19 @@ import {
   AlertIcon,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { auth, signInFirebase } from '../../utils/firebaseSetup';
-// function Login() {
-//   return (
-//     <div>Login</div>
-//   );
-// }
-export default function LoginPage() {
+import { auth, signUpFirebase } from '../../utils/firebaseSetup';
+
+export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await signInFirebase(auth, email, password);
-      navigate('/');
+      await signUpFirebase(auth, email, password);
+      navigate('/login');
     } catch (error: any) {
       setErrorMessage(error.message);
     }
@@ -54,10 +50,9 @@ export default function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
         />
       </FormControl>
-      <Button type="submit" onClick={handleLogin}>
-        Log In
+      <Button type="submit" onClick={handleRegister}>
+        Register
       </Button>
     </form>
   );
 }
-// export default Login;
