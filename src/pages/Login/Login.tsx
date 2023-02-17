@@ -20,7 +20,7 @@ export default function LoginPage() {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault();
     try {
       await signInFirebase(auth, email, password);

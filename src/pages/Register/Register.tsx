@@ -16,7 +16,7 @@ export default function Register() {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleRegister: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault();
     try {
       await signUpFirebase(auth, email, password);
