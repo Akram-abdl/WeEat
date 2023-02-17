@@ -1,29 +1,19 @@
+import React from 'react';
 import {
-  Box, Flex, Grid, Img,
+  Box, CircularProgress, Flex, Grid, Img,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
-import { Recipe } from '../../interfaces/Recipe';
 import SpoonacularService from '../../services/SpoonacularService';
 
-function SearchRecipes() {
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
-
+function Search() {
   const [queryParameters] = useSearchParams();
 
-  const searchTerm = queryParameters.get('searchTerm');
+  const searchTerm = queryParameters.get('searchTerm') ?? '';
 
-  const handleSearch = async () => {
-    if (searchTerm === null || searchTerm === '') return;
-
-    const newRecipes = await SpoonacularService.searchRecipes(searchTerm);
-
-    setRecipes(newRecipes);
-  };
-
-  useEffect(() => {
-    handleSearch();
-  }, [searchTerm]);
+  const {
+    isLoading, data,
+  } = useQuery(['spoonacular-search', searchTerm], () => SpoonacularService.searchRecipes(searchTerm));
 
   return (
     <div>
@@ -31,8 +21,10 @@ function SearchRecipes() {
         Résultats:
       </div>
 
+      {isLoading && <CircularProgress />}
+
       <Grid gridTemplateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={2}>
-        {recipes.map((recipe) => (
+        {data && data.map((recipe) => (
           <Flex key={recipe.id} justifyContent="space-between" flexDir="column">
             <Box textAlign="center">
               {recipe.title}
@@ -46,4 +38,4 @@ function SearchRecipes() {
   );
 }
 
-export default SearchRecipes;
+export default Search;
