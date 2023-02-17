@@ -40,6 +40,14 @@ function NavBar() {
     }
   };
 
+  const handleProfile = async () => {
+    try {
+      navigate('/profile');
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
+
   const { currentUser } = auth;
   const isUserLoggedIn = !!currentUser;
   return (
@@ -99,6 +107,8 @@ function NavBar() {
               ) : (
                 <MenuItem onClick={() => navigate('/login')}>Connexion</MenuItem>
               )}
+              <MenuItem onClick={handleProfile}>Profile</MenuItem>
+              <MenuDivider />
             </MenuList>
           </Menu>
         </Flex>
