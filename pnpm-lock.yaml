@@ -26,6 +26,7 @@ specifiers:
   recoil: ^0.7.6
   typescript: ^4.9.3
   vite: ^4.1.0
+  zod: ^3.20.6
 
 dependencies:
   '@chakra-ui/icons': 2.0.17_n3dxrjldmk5gnycgnw7noyo5tu
@@ -39,6 +40,7 @@ dependencies:
   react-query: 3.39.3_biqbaboplfbrettd7655fr4n2y
   react-router-dom: 6.8.1_biqbaboplfbrettd7655fr4n2y
   recoil: 0.7.6_biqbaboplfbrettd7655fr4n2y
+  zod: 3.20.6
 
 devDependencies:
   '@types/react': 18.0.28
@@ -4850,3 +4852,7 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zod/3.20.6:
+    resolution: {integrity: sha512-oyu0m54SGCtzh6EClBVqDDlAYRz4jrVtKwQ7ZnsEmMI9HnzuZFj8QFwAY1M5uniIYACdGvv0PBWPF2kO0aNofA==}
+    dev: false

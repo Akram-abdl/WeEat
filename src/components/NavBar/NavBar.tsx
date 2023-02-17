@@ -22,11 +22,13 @@ import { auth } from '../../utils/firebaseSetup';
 
 function NavBar() {
   const [searchTerm, setSearchTerm] = useState('');
+
   const navigate = useNavigate();
+
   const onSearch = () => {
     if (searchTerm === '' || searchTerm.trim() === '') return;
 
-    console.log('SEARCH', searchTerm);
+    navigate(`/search?searchTerm=${searchTerm}`);
   };
 
   const handleSignOut = async () => {
