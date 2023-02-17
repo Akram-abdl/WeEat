@@ -33,7 +33,7 @@ function SearchRecipes() {
 
       <Grid gridTemplateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={2}>
         {recipes.map((recipe) => (
-          <Flex justifyContent="space-between" flexDir="column">
+          <Flex key={recipe.id} justifyContent="space-between" flexDir="column">
             <Box textAlign="center">
               {recipe.title}
             </Box>
