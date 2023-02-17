@@ -8,7 +8,7 @@ function Root() {
     <>
       <Header />
 
-      <main>
+      <main style={{ padding: '1em' }}>
         <Outlet />
       </main>
 

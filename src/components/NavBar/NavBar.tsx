@@ -17,14 +17,17 @@ import {
   InputRightElement,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
+import { useNavigate } from 'react-router-dom';
 
 function NavBar() {
   const [searchTerm, setSearchTerm] = useState('');
 
+  const navigate = useNavigate();
+
   const onSearch = () => {
     if (searchTerm === '' || searchTerm.trim() === '') return;
 
-    console.log('SEARCH', searchTerm);
+    navigate(`/search?searchTerm=${searchTerm}`);
   };
 
   return (
