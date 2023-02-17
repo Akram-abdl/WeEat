@@ -30,6 +30,11 @@ export default function LoginPage() {
     }
   };
 
+  const handleRegister: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.preventDefault();
+    navigate('/register');
+  };
+
   return (
     <form>
       {errorMessage && (
@@ -54,10 +59,14 @@ export default function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
         />
       </FormControl>
+
       <Button type="submit" onClick={handleLogin}>
         Log In
+      </Button>
+
+      <Button variant="link" onClick={handleRegister} mt="2">
+        Register
       </Button>
     </form>
   );
 }
-// export default Login;

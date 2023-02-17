@@ -8,7 +8,9 @@ import {
   AlertIcon,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { auth, signUpFirebase } from '../../utils/firebaseSetup';
+import { UserCredential } from 'firebase/auth';
+import { auth, createUserDocument, signUpFirebase } from '../../utils/firebaseSetup';
+import { User } from '../../models/User';
 
 export default function Register() {
   const [email, setEmail] = useState('');
@@ -19,13 +21,28 @@ export default function Register() {
   const handleRegister: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault();
     try {
-      await signUpFirebase(auth, email, password);
+      const myUser: UserCredential = await signUpFirebase(auth, email, password);
+
+      // create a new user in Firebase Firestore with default values
+      const newUser: User = {
+        favorites: [''],
+        intolerances: [''],
+        isVegan: false,
+        isVegetarian: false,
+      };
+
+      console.log('newUser', newUser, 'myUser', myUser);
+      createUserDocument(myUser, newUser);
       navigate('/login');
     } catch (error: any) {
       setErrorMessage(error.message);
     }
   };
 
+  const handleLogin: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.preventDefault();
+    navigate('/login');
+  };
   return (
     <form>
       {errorMessage && (
@@ -52,6 +69,9 @@ export default function Register() {
       </FormControl>
       <Button type="submit" onClick={handleRegister}>
         Register
+      </Button>
+      <Button variant="link" onClick={handleLogin} mt="2">
+        Log in
       </Button>
     </form>
   );
