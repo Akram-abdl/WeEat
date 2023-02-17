@@ -18,7 +18,8 @@ module.exports = {
   plugins: [
     'react',
   ],
+  ignorePatterns: [".eslintrc.cjs"],
   rules: {
+    "max-len": ["error", { "code": 150, "ignoreComments": true, }],
   },
-  ignorePatterns: [".eslintrc.cjs"]
 };
