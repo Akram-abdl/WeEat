@@ -18,6 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../../utils/firebaseSetup';
 
 function NavBar() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -28,6 +29,15 @@ function NavBar() {
     if (searchTerm === '' || searchTerm.trim() === '') return;
 
     navigate(`/search?searchTerm=${searchTerm}`);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await auth.signOut();
+      navigate('/login');
+    } catch (error: any) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -82,7 +92,7 @@ function NavBar() {
             <MenuList>
               <MenuItem>Favoris</MenuItem>
               <MenuDivider />
-              <MenuItem>Déconnexion</MenuItem>
+              <MenuItem onClick={handleSignOut}>Déconnexion</MenuItem>
             </MenuList>
           </Menu>
         </Flex>
