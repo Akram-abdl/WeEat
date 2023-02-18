@@ -1,24 +1,36 @@
 import React, { useState } from 'react';
 import {
-  FormControl,
-  FormLabel,
+  Flex,
+  Heading,
   Input,
   Button,
-  Alert,
+  InputGroup,
+  Stack,
+  InputLeftElement,
+  chakra,
+  Box,
+  Link,
+  Avatar,
+  FormControl,
+  InputRightElement,
   AlertIcon,
+  Alert,
 } from '@chakra-ui/react';
+import { FaUserAlt, FaLock } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { auth, signInFirebase } from '../../utils/firebaseSetup';
-// function Login() {
-//   return (
-//     <div>Login</div>
-//   );
-// }
-export default function LoginPage() {
+
+const CFaUserAlt = chakra(FaUserAlt);
+const CFaLock = chakra(FaLock);
+
+function Login() {
+  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
+
+  const handleShowClick = () => setShowPassword(!showPassword);
 
   const handleLogin: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
     event.preventDefault();
@@ -30,43 +42,94 @@ export default function LoginPage() {
     }
   };
 
-  const handleRegister: React.MouseEventHandler<HTMLButtonElement> = (event) => {
-    event.preventDefault();
-    navigate('/register');
-  };
+  // const handleRegister = (event) => {
+  //   event.preventDefault();
+  //   navigate('/register');
+  // };
 
   return (
-    <form>
+    <Flex
+      flexDirection="column"
+      width="100wh"
+      height="100vh"
+      backgroundColor="whiteAlpha.900"
+      justifyContent="center"
+      alignItems="center"
+    >
       {errorMessage && (
         <Alert status="error">
           <AlertIcon />
           {errorMessage}
         </Alert>
       )}
-      <FormControl id="email" isRequired>
-        <FormLabel>Email address</FormLabel>
-        <Input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </FormControl>
-      <FormControl id="password" isRequired>
-        <FormLabel>Password</FormLabel>
-        <Input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </FormControl>
+      <Stack
+        flexDir="column"
+        mb="2"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Avatar bg="teal.500" />
+        <Heading color="teal.400">Welcome</Heading>
+        <Box minW={{ base: '90%', md: '468px' }}>
+          <form>
+            <Stack
+              spacing={4}
+              p="1rem"
+              backgroundColor="gray.200"
+              boxShadow="md"
+            >
+              <FormControl>
+                <InputGroup>
+                  <InputLeftElement pointerEvents="none">
+                    <CFaUserAlt color="gray.300" />
+                  </InputLeftElement>
+                  <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email address" bg="whiteAlpha.900" />
+                </InputGroup>
+              </FormControl>
+              <FormControl>
+                <InputGroup>
+                  <InputLeftElement pointerEvents="none">
 
-      <Button type="submit" onClick={handleLogin}>
-        Log In
-      </Button>
+                    <CFaLock color="gray.300" />
+                  </InputLeftElement>
+                  <Input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    placeholder="Password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    bg="whiteAlpha.900"
+                  />
+                  <InputRightElement width="4.5rem">
+                    <Button h="1.75rem" size="sm" onClick={handleShowClick}>
+                      {showPassword ? 'Hide' : 'Show'}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
 
-      <Button variant="link" onClick={handleRegister} mt="2">
-        Register
-      </Button>
-    </form>
+              </FormControl>
+              <Button
+                borderRadius={0}
+                type="submit"
+                variant="solid"
+                colorScheme="teal"
+                width="full"
+                onClick={handleLogin}
+              >
+                Login
+              </Button>
+            </Stack>
+          </form>
+        </Box>
+      </Stack>
+      <Box>
+        New to us?
+        {' '}
+        <Link color="teal.500" href="/register">
+          Sign Up
+        </Link>
+      </Box>
+    </Flex>
   );
 }
+
+export default Login;
