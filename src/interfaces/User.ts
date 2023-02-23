@@ -1,5 +1,5 @@
 export type User = {
-  favorites: string[];
+  favorites: number[];
   intolerances: string[];
   isVegan: boolean;
   isVegetarian: boolean;

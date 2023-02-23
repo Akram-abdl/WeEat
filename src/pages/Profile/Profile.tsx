@@ -8,8 +8,9 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { User as UserFirebase } from 'firebase/auth';
-import { auth, getUserDocument } from '../../utils/firebaseSetup';
+import { auth } from '../../utils/firebaseSetup';
 import { User as UserModel } from '../../interfaces/User';
+import UserService from '../../services/UserService';
 
 export default function Profile() {
   const currentUser: UserFirebase = auth.currentUser as UserFirebase;
@@ -18,7 +19,7 @@ export default function Profile() {
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getUserDocument(currentUser.uid);
+      const data = await UserService.getUserDocument(currentUser.uid);
       // verify if data is not null then set it to userData
       if (data) {
         setUserData(data.data() as UserModel);
