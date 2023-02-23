@@ -8,6 +8,7 @@ class SpoonacularService {
 
   private apiKey = import.meta.env.VITE_SPOONACULAR_API_KEY;
 
+  // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-unused-vars
   async searchRecipes(searchTerm: string): Promise<Recipe[]> {
     // const url = this.addApiKeyToUrl(`${this.apiUrl}/recipes/complexSearch?query=${searchTerm}`);
     // const response = await fetch(url, {});
