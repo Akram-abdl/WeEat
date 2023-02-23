@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
-export const SpoonacularDataSchema = z.object({
+export const SpoonacularSearchDataSchema = z.object({
   results: z.unknown(),
   offset: z.number(),
   number: z.number(),
   totalResults: z.number(),
 });
 
-export type SpoonacularData = z.infer<typeof SpoonacularDataSchema>;
+export const IngredientsAutocompleteResponseData = z.array(z.object({ name: z.string(), image: z.string() }));

@@ -1,10 +1,11 @@
 import React from 'react';
 import {
-  Box, CircularProgress, Flex, Grid, Img,
+  Box, CircularProgress, Flex, Grid, Img, GridItem,
 } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import SpoonacularService from '../../services/SpoonacularService';
+import Filters from '../../components/Filters/Filters';
 
 function Search() {
   const [queryParameters] = useSearchParams();
@@ -16,25 +17,23 @@ function Search() {
   } = useQuery(['spoonacular-search', searchTerm], () => SpoonacularService.searchRecipes(searchTerm));
 
   return (
-    <div>
-      <div>
-        Résultats:
-      </div>
+    <Grid gridTemplateColumns="240px 1fr" gap={2}>
+      <Filters />
+      <GridItem>
+        {isLoading && <CircularProgress />}
 
-      {isLoading && <CircularProgress />}
-
-      <Grid gridTemplateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={2}>
-        {data && data.map((recipe) => (
-          <Flex key={recipe.id} justifyContent="space-between" flexDir="column">
-            <Box textAlign="center">
-              {recipe.title}
-            </Box>
-            <Img src={recipe.image} />
-          </Flex>
-        ))}
-      </Grid>
-
-    </div>
+        <Grid gridTemplateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={2}>
+          {data && data.map((recipe) => (
+            <Flex key={recipe.id} justifyContent="space-between" flexDir="column">
+              <Box textAlign="center">
+                {recipe.title}
+              </Box>
+              <Img src={recipe.image} />
+            </Flex>
+          ))}
+        </Grid>
+      </GridItem>
+    </Grid>
   );
 }
 

@@ -1,7 +1,9 @@
 import { z } from 'zod';
+import ingredientsAutocompleteResponse from '../data/ingredientsAutocompleteResponse';
 import recipesSearchedResponse from '../data/recipesSearchedResponse';
+import { IngredientAutoComplete } from '../interfaces/IngredientAutoComplete';
 import { Recipe, RecipeSchema } from '../interfaces/Recipe';
-import { SpoonacularDataSchema } from '../interfaces/SpoonacularData';
+import { SpoonacularSearchDataSchema, IngredientsAutocompleteResponseData } from '../interfaces/SpoonacularData';
 
 class SpoonacularService {
   private apiUrl = import.meta.env.VITE_SPOONACULAR_API_URL;
@@ -16,11 +18,27 @@ class SpoonacularService {
     // const data = await response.json();
     const data = recipesSearchedResponse; // TESTS ONLY
 
-    const spoonacularData = SpoonacularDataSchema.parse(data);
+    const spoonacularData = SpoonacularSearchDataSchema.parse(data);
 
     const recipes = z.array(RecipeSchema).parse(spoonacularData.results);
 
     return recipes;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async autoCompleteIngredient(searchTerm: string): Promise<IngredientAutoComplete[]> {
+    if (searchTerm === '' || searchTerm.trim() === '') return [];
+    console.log('autoCompleteIngredient', searchTerm);
+
+    // const url = this.addApiKeyToUrl(`${this.apiUrl}/food/ingredients/autocomplete?query=${searchTerm}&number=5`);
+    // const response = await fetch(url, {});
+
+    // const data = await response.json();
+    const data = ingredientsAutocompleteResponse;
+
+    const ingredients = IngredientsAutocompleteResponseData.parse(data);
+
+    return ingredients;
   }
 
   addApiKeyToUrl(url: string) {
