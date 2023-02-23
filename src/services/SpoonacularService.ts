@@ -19,7 +19,7 @@ class SpoonacularService {
   async searchRecipes(parameters: SearchRecipesParameters): Promise<Recipe[]> {
     if (parameters.query?.trim() === '') return [];
 
-    // const response = await this.call(`recipes/complexSearch${this.createUrlParameters(parameters)}`);
+    // const response = await this.call('recipes/complexSearch', { ...parameters, number: 10 });
 
     // const data = await response.json();
     const data = recipesSearchedResponse; // TESTS ONLY
@@ -35,7 +35,7 @@ class SpoonacularService {
   async autoCompleteIngredient(parameters: SearchRecipesParameters): Promise<IngredientAutoComplete[]> {
     if (parameters.query?.trim() === '') return [];
 
-    // const response = await this.call(`food/ingredients/autocomplete${this.createUrlParameters({ ...parameters, number: 5 })}`);
+    // const response = await this.call('food/ingredients/autocomplete', { ...parameters, number: 5 });
 
     // const data = await response.json();
     const data = ingredientsAutocompleteResponse;
@@ -45,8 +45,8 @@ class SpoonacularService {
     return ingredients;
   }
 
-  private async call(url: string) {
-    return fetch(`${this.apiUrl}/${url}`);
+  private async call(url: string, parameters: object) {
+    return fetch(`${this.apiUrl}/${url}${this.createUrlParameters(parameters)}`);
   }
 
   private createUrlParameters(parameters: object) {
