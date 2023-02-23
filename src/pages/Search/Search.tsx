@@ -18,7 +18,7 @@ function Search() {
   const {
     isLoading, data,
     // eslint-disable-next-line max-len
-  } = useQuery(['spoonacular-search', searchTerm, filterIngredients], () => SpoonacularService.searchRecipes(searchTerm, { includeIngredients: filterIngredients }));
+  } = useQuery(['spoonacular-search', searchTerm, filterIngredients], () => SpoonacularService.searchRecipes({ query: searchTerm, includeIngredients: filterIngredients }));
 
   return (
     <Grid gridTemplateColumns="240px 1fr" gap={2}>

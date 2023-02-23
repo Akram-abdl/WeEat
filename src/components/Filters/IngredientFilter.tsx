@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import {
   chakraComponents, MultiValue, Select,
 } from 'chakra-react-select';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
 import useLazyQuery from '../../hooks/useLazyQuery';
 import SpoonacularService from '../../services/SpoonacularService';
@@ -35,7 +35,10 @@ const asyncComponents = {
 
 function IngredientFilter() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [trigger, query] = useLazyQuery(['spoonacular-search-ingredient', searchTerm], () => SpoonacularService.autoCompleteIngredient(searchTerm));
+  const [trigger, query] = useLazyQuery(
+    ['spoonacular-search-ingredient', searchTerm],
+    () => SpoonacularService.autoCompleteIngredient({ query: searchTerm }),
+  );
 
   const setFilterIngredients = useSetRecoilState(filterIngredientsAtom);
 

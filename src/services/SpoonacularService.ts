@@ -5,7 +5,8 @@ import { IngredientAutoComplete } from '../interfaces/IngredientAutoComplete';
 import { Recipe, RecipeSchema } from '../interfaces/Recipe';
 import { SpoonacularSearchDataSchema, IngredientsAutocompleteResponseData } from '../interfaces/SpoonacularData';
 
-interface SearchRecipesFilters {
+interface SearchRecipesParameters {
+  query?: string;
   includeIngredients?: string[]
 }
 
@@ -15,10 +16,10 @@ class SpoonacularService {
   private apiKey = import.meta.env.VITE_SPOONACULAR_API_KEY;
 
   // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-unused-vars
-  async searchRecipes(searchTerm: string, filters?: SearchRecipesFilters): Promise<Recipe[]> {
-    // eslint-disable-next-line max-len
-    // const url = this.addApiKeyToUrl(`${this.apiUrl}/recipes/complexSearch?query=${searchTerm}&includeIngredients=${filters?.includeIngredients ? filters.includeIngredients.join(',') : ''}`);
-    // const response = await fetch(url, {});
+  async searchRecipes(parameters: SearchRecipesParameters): Promise<Recipe[]> {
+    if (parameters.query?.trim() === '') return [];
+
+    // const response = await this.call(`recipes/complexSearch${this.createUrlParameters(parameters)}`);
 
     // const data = await response.json();
     const data = recipesSearchedResponse; // TESTS ONLY
@@ -27,18 +28,14 @@ class SpoonacularService {
 
     const recipes = z.array(RecipeSchema).parse(spoonacularData.results);
 
-    console.log('searchRecipes');
-
     return recipes;
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async autoCompleteIngredient(searchTerm: string): Promise<IngredientAutoComplete[]> {
-    if (searchTerm === '' || searchTerm.trim() === '') return [];
-    console.log('autoCompleteIngredient', searchTerm);
+  async autoCompleteIngredient(parameters: SearchRecipesParameters): Promise<IngredientAutoComplete[]> {
+    if (parameters.query?.trim() === '') return [];
 
-    // const url = this.addApiKeyToUrl(`${this.apiUrl}/food/ingredients/autocomplete?query=${searchTerm}&number=5`);
-    // const response = await fetch(url, {});
+    // const response = await this.call(`food/ingredients/autocomplete${this.createUrlParameters({ ...parameters, number: 5 })}`);
 
     // const data = await response.json();
     const data = ingredientsAutocompleteResponse;
@@ -48,12 +45,22 @@ class SpoonacularService {
     return ingredients;
   }
 
-  addApiKeyToUrl(url: string) {
-    const splittedUrl = url.split('?');
+  private async call(url: string) {
+    return fetch(`${this.apiUrl}/${url}`);
+  }
 
-    const newUrl = `${splittedUrl[0]}?apiKey=${this.apiKey}${splittedUrl[1] ? `&${splittedUrl[1]}` : null}`;
+  private createUrlParameters(parameters: object) {
+    return Object.entries(parameters).reduce((url, [parameterKey, parameterValue]) => {
+      const newUrl = `${url}&${parameterKey}=`;
 
-    return newUrl;
+      if (Array.isArray(parameterValue) && parameterValue.length > 0) return `${newUrl}${parameterValue.join(',')}`;
+      if (typeof parameterValue === 'string' && parameterValue.trim() !== '') return `${newUrl}${parameterValue}`;
+      if (typeof parameterValue === 'number') return `${newUrl}${parameterValue}`;
+
+      console.error(`Invalid parameter '${parameterKey}' -> '${parameterValue}'`);
+
+      return url;
+    }, `?apiKey=${this.apiKey}`);
   }
 }
 
