@@ -28,6 +28,3 @@ export const firestore = getFirestore(app);
 export const auth = getAuth(app);
 export const signInFirebase = signInWithEmailAndPassword;
 export const signUpFirebase = createUserWithEmailAndPassword;
-
-// // Export the function to create a new user document
-// export { createOrUpdateUserDocument, getUserDocument };

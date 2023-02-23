@@ -54,10 +54,11 @@ class UserService {
     }
   }
 
-  async getFavorites(uid: string) {
+  async getFavorites(uid: string): Promise<number[]> {
     // get the user's favorites and return them
     try {
       const userDocument = await this.getUserDocument(uid);
+      console.log('UserService :', userDocument);
       if (!userDocument.exists()) {
         throw new Error('User not found');
       }
