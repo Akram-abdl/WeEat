@@ -4,17 +4,21 @@ import {
 } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import SpoonacularService from '../../services/SpoonacularService';
 import Filters from '../../components/Filters/Filters';
+import filterIngredientsAtom from '../../atoms/filtersAtom';
 
 function Search() {
   const [queryParameters] = useSearchParams();
 
   const searchTerm = queryParameters.get('searchTerm') ?? '';
+  const filterIngredients = useRecoilValue(filterIngredientsAtom);
 
   const {
     isLoading, data,
-  } = useQuery(['spoonacular-search', searchTerm], () => SpoonacularService.searchRecipes(searchTerm));
+    // eslint-disable-next-line max-len
+  } = useQuery(['spoonacular-search', searchTerm, filterIngredients], () => SpoonacularService.searchRecipes(searchTerm, { includeIngredients: filterIngredients }));
 
   return (
     <Grid gridTemplateColumns="240px 1fr" gap={2}>

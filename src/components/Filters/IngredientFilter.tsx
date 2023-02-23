@@ -1,31 +1,14 @@
 import { Box } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
-  AsyncSelect, chakraComponents, MultiValue, Select,
+  chakraComponents, MultiValue, Select,
 } from 'chakra-react-select';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSetRecoilState } from 'recoil';
 import useLazyQuery from '../../hooks/useLazyQuery';
 import SpoonacularService from '../../services/SpoonacularService';
 import { IngredientAutoComplete } from '../../interfaces/IngredientAutoComplete';
-
-const flavorOptions = [
-  {
-    value: 'coffee',
-    label: 'Coffee',
-  },
-  {
-    value: 'chocolate',
-    label: 'Chocolate',
-  },
-  {
-    value: 'strawberry',
-    label: 'Strawberry',
-  },
-  {
-    value: 'cherry',
-    label: 'Cherry',
-  },
-];
+import filterIngredientsAtom from '../../atoms/filtersAtom';
 
 // These are the defaults for each of the custom props
 const asyncComponents = {
@@ -54,14 +37,19 @@ function IngredientFilter() {
   const [searchTerm, setSearchTerm] = useState('');
   const [trigger, query] = useLazyQuery(['spoonacular-search-ingredient', searchTerm], () => SpoonacularService.autoCompleteIngredient(searchTerm));
 
+  const setFilterIngredients = useSetRecoilState(filterIngredientsAtom);
+
   const handleSearch = (newSearchTerm: string) => {
     setSearchTerm(newSearchTerm);
 
     trigger();
   };
 
+  const queryClient = useQueryClient();
+
   const handleClick = (ingredientsAutoCompleted: MultiValue<IngredientAutoComplete>) => {
-    console.log(ingredientsAutoCompleted);
+    setFilterIngredients(ingredientsAutoCompleted.map((ingredientAutoCompleted) => ingredientAutoCompleted.name));
+    queryClient.invalidateQueries({ queryKey: ['spoonacular-search'] });
   };
 
   return (

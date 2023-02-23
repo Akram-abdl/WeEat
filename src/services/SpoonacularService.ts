@@ -5,14 +5,19 @@ import { IngredientAutoComplete } from '../interfaces/IngredientAutoComplete';
 import { Recipe, RecipeSchema } from '../interfaces/Recipe';
 import { SpoonacularSearchDataSchema, IngredientsAutocompleteResponseData } from '../interfaces/SpoonacularData';
 
+interface SearchRecipesFilters {
+  includeIngredients?: string[]
+}
+
 class SpoonacularService {
   private apiUrl = import.meta.env.VITE_SPOONACULAR_API_URL;
 
   private apiKey = import.meta.env.VITE_SPOONACULAR_API_KEY;
 
   // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-unused-vars
-  async searchRecipes(searchTerm: string): Promise<Recipe[]> {
-    // const url = this.addApiKeyToUrl(`${this.apiUrl}/recipes/complexSearch?query=${searchTerm}`);
+  async searchRecipes(searchTerm: string, filters?: SearchRecipesFilters): Promise<Recipe[]> {
+    // eslint-disable-next-line max-len
+    // const url = this.addApiKeyToUrl(`${this.apiUrl}/recipes/complexSearch?query=${searchTerm}&includeIngredients=${filters?.includeIngredients ? filters.includeIngredients.join(',') : ''}`);
     // const response = await fetch(url, {});
 
     // const data = await response.json();
@@ -21,6 +26,8 @@ class SpoonacularService {
     const spoonacularData = SpoonacularSearchDataSchema.parse(data);
 
     const recipes = z.array(RecipeSchema).parse(spoonacularData.results);
+
+    console.log('searchRecipes');
 
     return recipes;
   }
