@@ -10,16 +10,25 @@ class SpoonacularService {
 
   // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-unused-vars
   async searchRecipes(searchTerm: string): Promise<Recipe[]> {
-    // const url = this.addApiKeyToUrl(`${this.apiUrl}/recipes/complexSearch?query=${searchTerm}`);
-    // const response = await fetch(url, {});
+    const url = this.addApiKeyToUrl(`${this.apiUrl}/recipes/complexSearch?query=${searchTerm}`);
+    const response = await fetch(url, {});
 
-    // const data = await response.json();
-    const data = recipesSearchedResponse; // TESTS ONLY
+    const data = await response.json();
+    // const data = recipesSearchedResponse; // TESTS ONLY
 
     const spoonacularData = SpoonacularDataSchema.parse(data);
 
     const recipes = z.array(RecipeSchema).parse(spoonacularData.results);
 
+    return recipes;
+  }
+
+  async searchInformationBulk(ids: number[]): Promise<Recipe[]> {
+    const url = this.addApiKeyToUrl(`${this.apiUrl}/recipes/informationBulk?ids=${ids.join(',')}`);
+    const response = await fetch(url, {});
+    const data = await response.json();
+    const spoonacularData = SpoonacularDataSchema.parse(data);
+    const recipes = z.array(RecipeSchema).parse(spoonacularData);
     return recipes;
   }
 

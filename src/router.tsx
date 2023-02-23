@@ -7,6 +7,7 @@ import Login from './pages/Login/Login';
 import Search from './pages/Search/Search';
 import Register from './pages/Register/Register';
 import Profile from './pages/Profile/Profile';
+import Favorite from './pages/Favorite/Favorite';
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: 'profile',
         element: <Profile />,
+      },
+      {
+        path: 'favorites',
+        element: <Favorite />,
       },
       {
         path: 'search',
