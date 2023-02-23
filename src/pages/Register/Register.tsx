@@ -19,8 +19,9 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { User as UserFirebase } from 'firebase/auth';
 import { FaLock, FaUserAlt } from 'react-icons/fa';
-import { auth, createOrUpdateUserDocument, signUpFirebase } from '../../utils/firebaseSetup';
+import { auth, signUpFirebase } from '../../utils/firebaseSetup';
 import { User } from '../../interfaces/User';
+import UserService from '../../services/UserService';
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -41,13 +42,13 @@ function Register() {
       const myUser: UserFirebase = auth.currentUser as UserFirebase;
       // create a new user in Firebase Firestore with default values
       const newUser: User = {
-        favorites: [''],
-        intolerances: [''],
+        favorites: [],
+        intolerances: [],
         isVegan: false,
         isVegetarian: false,
       };
 
-      createOrUpdateUserDocument(myUser, newUser);
+      UserService.createOrUpdateUserDocument(myUser, newUser);
       navigate('/login');
     } catch (error: any) {
       setErrorMessage(error.message);

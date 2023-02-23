@@ -32,5 +32,4 @@ class SpoonacularService {
   }
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export default new SpoonacularService();

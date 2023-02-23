@@ -1,12 +1,11 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import {
-  getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, User as UserFirebase,
+  getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
 } from 'firebase/auth';
 import {
-  getFirestore, setDoc, getDoc, doc,
+  getFirestore,
 } from 'firebase/firestore';
-import { User as UserModel } from '../interfaces/User';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -23,31 +22,12 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 // Initialize Firestore and get a reference to the service
-const firestore = getFirestore(app);
-
-// Create a new user document in Firestore
-const createOrUpdateUserDocument = async (myUserFirebase: UserFirebase, myUserModel: UserModel) => {
-  try {
-    await setDoc(doc(firestore, 'user', myUserFirebase.uid), myUserModel);
-  } catch (error) {
-    console.error('Error creating user document:', error);
-  }
-};
-
-const getUserDocument = async (uid: string) => {
-  try {
-    const userDocument = await getDoc(doc(firestore, 'user', uid));
-    return userDocument;
-  } catch (error) {
-    console.error('Error fetching user:', error);
-    return null;
-  }
-};
+export const firestore = getFirestore(app);
 
 // Initialize Firebase Authentication and get a reference to the service
 export const auth = getAuth(app);
 export const signInFirebase = signInWithEmailAndPassword;
 export const signUpFirebase = createUserWithEmailAndPassword;
 
-// Export the function to create a new user document
-export { createOrUpdateUserDocument, getUserDocument };
+// // Export the function to create a new user document
+// export { createOrUpdateUserDocument, getUserDocument };
