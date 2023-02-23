@@ -42,20 +42,9 @@ function Login() {
     }
   };
 
-  // const handleRegister = (event) => {
-  //   event.preventDefault();
-  //   navigate('/register');
-  // };
-
   return (
-    <Flex
-      flexDirection="column"
-      width="100wh"
-      height="100vh"
-      backgroundColor="whiteAlpha.900"
-      justifyContent="center"
-      alignItems="center"
-    >
+    <Flex pt="20" flexDirection="column" alignItems="center" justifyContent="center">
+
       {errorMessage && (
         <Alert status="error">
           <AlertIcon />

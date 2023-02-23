@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-  Box, Heading, Text, Button,
+  Heading, Text, Button, Flex,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 function PageNotFound() {
   const navigate = useNavigate();
   return (
-    <Box textAlign="center" py={10} px={6}>
+    <Flex pt="20" flexDirection="column" alignItems="center" justifyContent="center">
       <Heading
         display="inline-block"
         as="h2"
@@ -35,7 +35,7 @@ function PageNotFound() {
       >
         Go to Home
       </Button>
-    </Box>
+    </Flex>
   );
 }
 

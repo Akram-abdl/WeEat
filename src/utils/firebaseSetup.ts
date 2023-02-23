@@ -6,7 +6,7 @@ import {
 import {
   getFirestore, setDoc, getDoc, doc,
 } from 'firebase/firestore';
-import { User as UserModel } from '../models/User';
+import { User as UserModel } from '../interfaces/User';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 

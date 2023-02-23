@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { User as UserFirebase } from 'firebase/auth';
 import { auth, getUserDocument } from '../../utils/firebaseSetup';
-import { User as UserModel } from '../../models/User';
+import { User as UserModel } from '../../interfaces/User';
 
 export default function Profile() {
   const currentUser: UserFirebase = auth.currentUser as UserFirebase;

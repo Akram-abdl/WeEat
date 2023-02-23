@@ -20,7 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import { User as UserFirebase } from 'firebase/auth';
 import { FaLock, FaUserAlt } from 'react-icons/fa';
 import { auth, createOrUpdateUserDocument, signUpFirebase } from '../../utils/firebaseSetup';
-import { User as UserModel } from '../../models/User';
+import { User } from '../../interfaces/User';
 
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
@@ -40,14 +40,13 @@ function Register() {
       await signUpFirebase(auth, email, password);
       const myUser: UserFirebase = auth.currentUser as UserFirebase;
       // create a new user in Firebase Firestore with default values
-      const newUser: UserModel = {
+      const newUser: User = {
         favorites: [''],
         intolerances: [''],
         isVegan: false,
         isVegetarian: false,
       };
 
-      console.log('newUser', newUser, 'myUser', myUser);
       createOrUpdateUserDocument(myUser, newUser);
       navigate('/login');
     } catch (error: any) {
@@ -56,15 +55,7 @@ function Register() {
   };
 
   return (
-
-    <Flex
-      flexDirection="column"
-      width="100wh"
-      height="100vh"
-      backgroundColor="whiteAlpha.900"
-      justifyContent="center"
-      alignItems="center"
-    >
+    <Flex pt="20" flexDirection="column" alignItems="center" justifyContent="center">
       {errorMessage && (
         <Alert status="error">
           <AlertIcon />
