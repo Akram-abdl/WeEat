@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Box, CircularProgress, Flex, Heading, SimpleGrid, Stack, Image,
+  Box, Flex, Heading, SimpleGrid, Stack, Image, Spinner,
 } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { RecipeInformation } from '../../interfaces/RecipeInformation';
 // import UserService from '../../services/UserService';
 // import { auth } from '../../utils/firebaseSetup';
 
-function Favorite() {
+function Favorites() {
   // const [queryParameters] = useSearchParams();
   // const queryClient = useQueryClient();
   // const myUser = auth.currentUser;
@@ -35,7 +35,7 @@ function Favorite() {
   return (
     <Box p={4}>
       <Heading as="h2" size="lg" mb={4}>My Favorites</Heading>
-      {isLoading && <CircularProgress />}
+      {isLoading && <Spinner size="xl" />}
       {data && (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4}>
           {data.map((recipe) => (
@@ -97,4 +97,4 @@ function Favorite() {
   );
 }
 
-export default Favorite;
+export default Favorites;

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Box, CircularProgress, Flex, Grid, IconButton, Img,
+  Box, Flex, Grid, IconButton, Img, Spinner,
 } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { FaHeart } from 'react-icons/fa';
@@ -53,7 +53,7 @@ function RecipesSearched() {
       refetchFavorites();
     }
   };
-  if (isLoadingRecipes || isLoadingFavorites) return <CircularProgress />;
+  if (isLoadingRecipes || isLoadingFavorites) return <Spinner size="xl" />;
 
   return (
     <Grid gridTemplateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={2}>

@@ -2,12 +2,13 @@ import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import Root from './layouts/Root/Root';
 import PageNotFound from './pages/Errors/PageNotFound';
-import Home from './pages/Home/Home';
-import Login from './pages/Login/Login';
-import Search from './pages/Search/Search';
-import Register from './pages/Register/Register';
-import Profile from './pages/Profile/Profile';
-import Favorite from './pages/Favorite/Favorite';
+
+const Home = React.lazy(() => import('./pages/Home/Home'));
+const Login = React.lazy(() => import('./pages/Login/Login'));
+const Register = React.lazy(() => import('./pages/Register/Register'));
+const Profile = React.lazy(() => import('./pages/Profile/Profile'));
+const Favorites = React.lazy(() => import('./pages/Favorites/Favorites'));
+const Search = React.lazy(() => import('./pages/Search/Search'));
 
 const router = createBrowserRouter([
   {
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'favorites',
-        element: <Favorite />,
+        element: <Favorites />,
       },
       {
         path: 'search',
