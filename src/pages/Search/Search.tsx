@@ -54,7 +54,6 @@ function Search() {
 
       // update the favorites query data
       refetchFavorites();
-      console.log(favorites, recipeId);
     }
   };
 

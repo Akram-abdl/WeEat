@@ -11,9 +11,12 @@ interface SearchRecipesParameters {
   includeIngredients?: string[]
 }
 
+interface AutoCompleteIngredientParameters {
+  query: string
+}
+
 interface RecipeInformationParameters {
   ids: number[]
-
 }
 
 class SpoonacularService {
@@ -29,8 +32,8 @@ class SpoonacularService {
 
     // const response = await this.call(`recipes/complexSearch${this.createUrlParameters(parameters)}`);
 
-    const data = await response.json();
-    // const data = recipesSearchedResponse; // TESTS ONLY
+    // const data = await response.json();
+    const data = recipesSearchedResponse; // TESTS ONLY
 
     const spoonacularData = SpoonacularSearchDataSchema.parse(data);
 
@@ -39,17 +42,18 @@ class SpoonacularService {
     return recipes;
   }
 
-  async searchInformationBulk(parameters: RecipeInformationParameters): Promise<Recipe[]> {
+  async searchRecipeInformationBulk(parameters: RecipeInformationParameters): Promise<Recipe[]> {
     if (parameters.ids.length === 0) return [];
-    const response = await this.call(`recipes/informationBulk${this.createUrlParameters({ ids: parameters })}`);
+
+    const response = await this.call('recipes/informationBulk', parameters);
     const data = await response.json();
-    // const spoonacularData = RecipeInformationSchema.parse(data); sert a rien
-    const recipes = z.array(RecipeInformationSchema).parse(data);
-    return recipes;
+
+    const recipesInformation = z.array(RecipeInformationSchema).parse(data);
+    return recipesInformation;
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async autoCompleteIngredient(parameters: SearchRecipesParameters): Promise<IngredientAutoComplete[]> {
+  async autoCompleteIngredient(parameters: AutoCompleteIngredientParameters): Promise<IngredientAutoComplete[]> {
     if (parameters.query?.trim() === '') return [];
 
     // const response = await this.call('food/ingredients/autocomplete', { ...parameters, number: 5 });

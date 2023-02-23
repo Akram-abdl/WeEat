@@ -31,7 +31,7 @@ function Favorite() {
 
   const {
     isLoading, data,
-  } = useQuery(['favoriteBulk-search', myIds], () => myIds && SpoonacularService.searchInformationBulk(myIds));
+  } = useQuery(['favoriteBulk-search', myIds], () => SpoonacularService.searchRecipeInformationBulk({ ids: myIds }));
   return (
     <Box p={4}>
       <Heading as="h2" size="lg" mb={4}>My Favorites</Heading>
