@@ -5,6 +5,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import SpoonacularService from '../../services/SpoonacularService';
+import { RecipeInformation } from '../../interfaces/RecipeInformation';
 // import UserService from '../../services/UserService';
 // import { auth } from '../../utils/firebaseSetup';
 
