@@ -52,6 +52,19 @@ class SpoonacularService {
     return recipesInformation;
   }
 
+  async searchRandomRecipes(): Promise<Recipe[]> {
+    const parameters: AutoCompleteIngredientParameters = { query: 'random=5' };
+    const response = await this.call('recipes/random', parameters);
+
+    const data = await response.json();
+
+    const spoonacularData = SpoonacularSearchDataSchema.parse(data);
+
+    const recipes = z.array(RecipeSchema).parse(spoonacularData.results);
+
+    return recipes;
+  }
+
   // eslint-disable-next-line class-methods-use-this
   async autoCompleteIngredient(parameters: AutoCompleteIngredientParameters): Promise<IngredientAutoComplete[]> {
     if (parameters.query?.trim() === '') return [];
