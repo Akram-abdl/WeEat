@@ -6,17 +6,19 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import SpoonacularService from '../../services/SpoonacularService';
 import { RecipeInformation } from '../../interfaces/RecipeInformation';
+import UserService from '../../services/UserService';
 // import UserService from '../../services/UserService';
-// import { auth } from '../../utils/firebaseSetup';
+import { auth } from '../../utils/firebaseSetup';
 
 function Favorites() {
   // const [queryParameters] = useSearchParams();
-  // const queryClient = useQueryClient();
-  // const myUser = auth.currentUser;
-  const myIds = [782585, 715497, 716406];
-  // const {
-  //   isLoading: isLoadingFavorites, data: favorites, refetch: refetchFavorites,
-  // } = useQuery(['favoritespage-search', myUser?.uid], () => myUser && UserService.getFavorites(myUser.uid));
+  const queryClient = useQueryClient();
+  const myUser = auth.currentUser;
+  console.log('myUser', myUser);
+  // const myIds = [782585, 715497, 716406];
+  const {
+    isLoading: isLoadingFavorites, data: favorites, refetch: refetchFavorites,
+  } = useQuery(['favoritespage-search', myUser?.uid], () => myUser && UserService.getFavorites(myUser.uid));
   // const mutateAddFavorite = useMutation((recipeId: number) => UserService.addFavorite(myUser?.uid || '', recipeId), {
   //   onSuccess: () => {
   //     queryClient.invalidateQueries(['favoritespage-search', myUser?.uid]);
@@ -31,11 +33,12 @@ function Favorites() {
 
   const {
     isLoading, data,
-  } = useQuery(['favoriteBulk-search', myIds], () => SpoonacularService.searchRecipeInformationBulk({ ids: myIds }));
+  } = useQuery(['favoriteBulk-search', favorites], () => favorites && SpoonacularService.searchRecipeInformationBulk({ ids: favorites }));
+  console.log('favorites', favorites, 'data', data);
   return (
     <Box p={4}>
       <Heading as="h2" size="lg" mb={4}>My Favorites</Heading>
-      {isLoading && <Spinner size="xl" />}
+      {isLoading && isLoadingFavorites && <Spinner size="xl" />}
       {data && (
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={4}>
           {data.map((recipe) => (
@@ -45,7 +48,7 @@ function Favorites() {
                 p={6}
                 maxW="330px"
                 w="full"
-                bg="gray.800"
+                bg="gray.200"
                 boxShadow="2xl"
                 rounded="lg"
                 pos="relative"

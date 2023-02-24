@@ -30,8 +30,6 @@ class SpoonacularService {
 
     // const response = await this.call('recipes/complexSearch', { ...parameters, number: 10 });
 
-    // const response = await this.call(`recipes/complexSearch${this.createUrlParameters(parameters)}`);
-
     // const data = await response.json();
     const data = recipesSearchedResponse; // TESTS ONLY
 
@@ -46,9 +44,11 @@ class SpoonacularService {
     if (parameters.ids.length === 0) return [];
 
     const response = await this.call('recipes/informationBulk', parameters);
+    console.log('response :', response);
     const data = await response.json();
-
+    console.log('data service :', data);
     const recipesInformation = z.array(RecipeInformationSchema).parse(data);
+    console.log('recipesInformation :', recipesInformation);
     return recipesInformation;
   }
 

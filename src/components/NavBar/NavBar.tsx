@@ -48,6 +48,13 @@ function NavBar() {
     }
   };
 
+  const handleFavorite = async () => {
+    try {
+      navigate('/favorites');
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
   const { currentUser } = auth;
   const isUserLoggedIn = !!currentUser;
   return (
@@ -100,7 +107,7 @@ function NavBar() {
               />
             </MenuButton>
             <MenuList>
-              <MenuItem>Favoris</MenuItem>
+              <MenuItem onClick={handleFavorite}>Favoris</MenuItem>
               <MenuDivider />
               {isUserLoggedIn ? (
                 <MenuItem onClick={handleSignOut}>Déconnexion</MenuItem>
