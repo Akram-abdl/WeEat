@@ -12,6 +12,9 @@ const fr: ResourceLanguage = {
     'footer-rights-reserved': '© 2022 WeEat. Tous droits réservés',
     ingredients: 'Ingrédients',
     'ingredients-filter-input': 'Ecrivez des ingrédients...',
+    'popular-recipes': 'Recette populaires',
+    'last-favorites': 'Vos derniers favoris',
+    suggestions: 'Quelques recettes selon vos goûts',
   },
 };
 export default fr;
