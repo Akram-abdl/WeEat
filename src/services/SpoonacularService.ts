@@ -1,6 +1,5 @@
+import { createStandaloneToast } from '@chakra-ui/react';
 import { z } from 'zod';
-import ingredientsAutocompleteResponse from '../data/ingredientsAutocompleteResponse';
-import recipesSearchedResponse from '../data/recipesSearchedResponse';
 import { IngredientAutoComplete } from '../interfaces/IngredientAutoComplete';
 import RandomRecipes from '../interfaces/RandomRecipes';
 import { Recipe, RecipeSchema } from '../interfaces/Recipe';
@@ -20,6 +19,8 @@ interface RecipeInformationParameters {
   ids: number[]
 }
 
+const { toast } = createStandaloneToast();
+const warningID = 'warningID';
 class SpoonacularService {
   private apiUrl = import.meta.env.VITE_SPOONACULAR_API_URL;
 
@@ -29,10 +30,7 @@ class SpoonacularService {
   async searchRecipes(parameters: SearchRecipesParameters): Promise<Recipe[]> {
     if (parameters.query.trim() === '') return [];
 
-    // const response = await this.call('recipes/complexSearch', { ...parameters, number: 10 });
-
-    // const data = await response.json();
-    const data = recipesSearchedResponse; // TESTS ONLY
+    const data = await this.call('recipes/complexSearch', { ...parameters, number: 10 });
 
     const spoonacularData = SpoonacularSearchDataSchema.parse(data);
 
@@ -44,20 +42,15 @@ class SpoonacularService {
   async searchRecipeInformationBulk(parameters: RecipeInformationParameters): Promise<Recipe[]> {
     if (parameters.ids.length === 0) return [];
 
-    const response = await this.call('recipes/informationBulk', parameters);
-    console.log('response :', response);
-    const data = await response.json();
-    console.log('data service :', data);
+    const data = await this.call('recipes/informationBulk', parameters);
+
     const recipesInformation = z.array(RecipeInformationSchema).parse(data);
-    console.log('recipesInformation :', recipesInformation);
     return recipesInformation;
   }
 
   async searchRandomRecipes(): Promise<RecipeInformation[]> {
     const parameters = { number: 5 };
-    const response = await this.call('recipes/random', parameters);
-
-    const data = await response.json();
+    const data = await this.call('recipes/random', parameters);
 
     const randomRecipes: RandomRecipes = data;
 
@@ -70,10 +63,7 @@ class SpoonacularService {
   async autoCompleteIngredient(parameters: AutoCompleteIngredientParameters): Promise<IngredientAutoComplete[]> {
     if (parameters.query?.trim() === '') return [];
 
-    // const response = await this.call('food/ingredients/autocomplete', { ...parameters, number: 5 });
-
-    // const data = await response.json();
-    const data = ingredientsAutocompleteResponse;
+    const data = await this.call('food/ingredients/autocomplete', { ...parameters, number: 5 });
 
     const ingredients = IngredientsAutocompleteResponseData.parse(data);
 
@@ -81,7 +71,23 @@ class SpoonacularService {
   }
 
   private async call(url: string, parameters: object) {
-    return fetch(`${this.apiUrl}/${url}${this.createUrlParameters(parameters)}`);
+    const response = await fetch(`${this.apiUrl}/${url}${this.createUrlParameters(parameters)}`);
+    const data = await response.json();
+    if (!response.ok) {
+      if (!toast.isActive(warningID)) {
+        toast({
+          id: warningID,
+          title: response.statusText,
+          description: data.message,
+          status: 'error',
+          position: 'top',
+          isClosable: true,
+          duration: 4000,
+        });
+      }
+      throw new Error(response.statusText);
+    }
+    return data;
   }
 
   private createUrlParameters(parameters: object) {
@@ -91,8 +97,6 @@ class SpoonacularService {
       if (Array.isArray(parameterValue) && parameterValue.length > 0) return `${newUrl}${parameterValue.join(',')}`;
       if (typeof parameterValue === 'string' && parameterValue.trim() !== '') return `${newUrl}${parameterValue}`;
       if (typeof parameterValue === 'number') return `${newUrl}${parameterValue}`;
-
-      console.error(`Invalid parameter '${parameterKey}' -> '${parameterValue}'`);
 
       return url;
     }, `?apiKey=${this.apiKey}`);

@@ -3,10 +3,8 @@ import {
   Box, Flex, Heading, SimpleGrid, Stack, Image, Spinner, IconButton,
 } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useSearchParams } from 'react-router-dom';
 import { FaHeart } from 'react-icons/fa';
 import SpoonacularService from '../../services/SpoonacularService';
-import { RecipeInformation } from '../../interfaces/RecipeInformation';
 import UserService from '../../services/UserService';
 // import UserService from '../../services/UserService';
 import { auth } from '../../utils/firebaseSetup';
@@ -46,7 +44,11 @@ function Favorites() {
   };
   const {
     isLoading, data,
-  } = useQuery(['favoriteBulk-search', favorites], () => favorites && SpoonacularService.searchRecipeInformationBulk({ ids: favorites }));
+  } = useQuery(
+    ['favoriteBulk-search', favorites],
+    () => favorites && SpoonacularService.searchRecipeInformationBulk({ ids: favorites }),
+    { retry: false, refetchOnWindowFocus: false },
+  );
   console.log('favorites', favorites, 'data', data);
   return (
     <Box p={4}>
