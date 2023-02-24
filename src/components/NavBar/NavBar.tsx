@@ -15,9 +15,10 @@ import {
   InputLeftElement,
   Input,
   InputRightElement,
+  Text,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { auth } from '../../utils/firebaseSetup';
 
 function NavBar() {
@@ -54,7 +55,7 @@ function NavBar() {
     <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
       <Flex h={16} alignItems="center" justifyContent="space-between">
         <HStack spacing={8} alignItems="center" width="100%">
-          <Box>WeEat</Box>
+          <NavLink to="/"><Text as="h1" fontSize="xl">WeEat</Text></NavLink>
           <InputGroup>
             <InputLeftElement pointerEvents="none">
               <SearchIcon color="gray.300" />
@@ -68,6 +69,7 @@ function NavBar() {
                 }
               }}
               onChange={(e) => setSearchTerm(e.target.value)}
+              borderColor="gray.300"
             />
             <InputRightElement mr={1}>
               <Button size="sm" variant="solid" colorScheme="teal" onClick={onSearch}>
