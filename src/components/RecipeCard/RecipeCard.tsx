@@ -13,7 +13,7 @@ function RecipeCard({ recipe }: Props) {
     <div>
       {recipe
         ? (
-          <Card maxW="sm" align="center">
+          <Card maxW="sm" align="center" variant="filled">
             <CardBody>
               <Image
                 src={recipe.image}
