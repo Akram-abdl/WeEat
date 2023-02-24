@@ -7,7 +7,7 @@ import { RecipeInformationSchema } from '../interfaces/RecipeInformation';
 import { SpoonacularSearchDataSchema, IngredientsAutocompleteResponseData } from '../interfaces/SpoonacularData';
 
 interface SearchRecipesParameters {
-  query?: string;
+  query: string;
   includeIngredients?: string[]
 }
 
@@ -26,7 +26,7 @@ class SpoonacularService {
 
   // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-unused-vars
   async searchRecipes(parameters: SearchRecipesParameters): Promise<Recipe[]> {
-    if (parameters.query?.trim() === '') return [];
+    if (parameters.query.trim() === '') return [];
 
     // const response = await this.call('recipes/complexSearch', { ...parameters, number: 10 });
 

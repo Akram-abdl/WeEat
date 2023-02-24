@@ -1,10 +1,11 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import {
   chakraComponents, MultiValue, Select,
 } from 'chakra-react-select';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSetRecoilState } from 'recoil';
+import { useTranslation } from 'react-i18next';
 import useLazyQuery from '../../hooks/useLazyQuery';
 import SpoonacularService from '../../services/SpoonacularService';
 import { IngredientAutoComplete } from '../../interfaces/IngredientAutoComplete';
@@ -34,6 +35,8 @@ const asyncComponents = {
 };
 
 function IngredientFilter() {
+  const { t } = useTranslation();
+
   const [searchTerm, setSearchTerm] = useState('');
   const [trigger, query] = useLazyQuery(
     ['spoonacular-search-ingredient', searchTerm],
@@ -57,12 +60,12 @@ function IngredientFilter() {
 
   return (
     <Box>
-      <p>Ingrédients</p>
+      <Text>{t('ingredients')}</Text>
       <Select
         isMulti
         name="ingredients"
         options={query.data}
-        placeholder="Choisissez des ingrédients..."
+        placeholder={t('ingredients-filter-input')}
         onChange={(values) => handleClick(values)}
         components={asyncComponents}
         isLoading={searchTerm !== '' && query.isLoading}
