@@ -39,6 +39,14 @@ function NavBar() {
     }
   };
 
+  const handleFavorite = async () => {
+    try {
+      navigate('/favorites');
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
+
   const { currentUser } = auth;
   const isUserLoggedIn = !!currentUser;
 
