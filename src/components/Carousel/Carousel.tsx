@@ -72,9 +72,12 @@ function CarouselComponent() {
         />
         {/* Left Icon */}
         <IconButton
+          color="white"
+          colorScheme="teal"
+          backgroundColor="teal"
           aria-label="left-arrow"
           position="absolute"
-          left="0%"
+          left="1%"
           bottom="50%"
           transform="translate(0%, -50%)"
           zIndex={2}
@@ -84,9 +87,12 @@ function CarouselComponent() {
         </IconButton>
         {/* Right Icon */}
         <IconButton
+          color="white"
+          colorScheme="teal"
+          backgroundColor="teal"
           aria-label="right-arrow"
           position="absolute"
-          right="0%"
+          right="1%"
           bottom="50%"
           transform="translate(0%, -50%)"
           zIndex={2}
@@ -100,6 +106,8 @@ function CarouselComponent() {
           arrows={false}
           infinite
           speed={500}
+          autoplay
+          autoplaySpeed={5000}
           slidesToShow={3}
           slidesToScroll={1}
           initialSlide={0}

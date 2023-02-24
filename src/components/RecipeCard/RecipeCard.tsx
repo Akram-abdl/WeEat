@@ -26,7 +26,7 @@ function RecipeCard({ recipe }: Props) {
             </CardBody>
             <Divider />
             <CardFooter>
-              <Button variant="solid" colorScheme="blue">
+              <Button variant="solid" colorScheme="teal">
                 View recipe
               </Button>
             </CardFooter>
