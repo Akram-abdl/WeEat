@@ -7,10 +7,10 @@ import { Recipe } from '../../interfaces/Recipe';
 import SpoonacularService from '../../services/SpoonacularService';
 
 function Home() {
-  // const {
-  //   isLoading: isLoadingRecipes, data: recipes,
-  //   // eslint-disable-next-line max-len
-  // } = useQuery(['spoonacular-search'], () => SpoonacularService.searchRandomRecipes());
+  const {
+    isLoading: isLoadingRecipes, data: recipes,
+    // eslint-disable-next-line max-len
+  } = useQuery(['spoonacular-search'], () => SpoonacularService.searchRandomRecipes());
 
   const favoriteRecipes: Recipe[] = [
     {
@@ -63,13 +63,13 @@ function Home() {
     },
   ];
 
-  // if (isLoadingRecipes) return <Spinner size="xl" />;
+  if (isLoadingRecipes) return <Spinner size="xl" />;
 
   return (
     <div>
       <Heading as="h2" textAlign="center" marginBottom="1rem">Popular recipes</Heading>
-      {/* {recipes
-        && <Carousel recipes={recipes} />} */}
+      {recipes
+        && <Carousel recipes={recipes} />}
       <Heading as="h2" textAlign="center" marginBottom="1rem">Your last favorites</Heading>
       <RecipeGrid maxCards={4} recipes={favoriteRecipes} />
       <Heading as="h2" textAlign="center" marginBottom="1rem">Some recipes you may like</Heading>
