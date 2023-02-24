@@ -9,44 +9,14 @@ import {
 // And react-slick as our Carousel Lib
 import Slider from 'react-slick';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
-import { Recipe } from '../../interfaces/Recipe';
 import RecipeCard from '../RecipeCard/RecipeCard';
+import { RecipeInformation } from '../../interfaces/RecipeInformation';
 
-function CarouselComponent() {
-  // TO REMOVE : test values
-  const data: Recipe[] = [
-    {
-      id: 654959,
-      title: 'Pasta With Tuna',
-      image: 'https://spoonacular.com/recipeImages/654959-312x231.jpg',
-      imageType: 'jpg',
-    },
-    {
-      id: 654857,
-      title: 'Pasta On The Border',
-      image: 'https://spoonacular.com/recipeImages/654857-312x231.jpg',
-      imageType: 'jpg',
-    },
-    {
-      id: 654883,
-      title: 'Pasta Vegetable Soup',
-      image: 'https://spoonacular.com/recipeImages/654883-312x231.jpg',
-      imageType: 'jpg',
-    },
-    {
-      id: 654883,
-      title: 'Pasta Vegetable Soup',
-      image: 'https://spoonacular.com/recipeImages/654883-312x231.jpg',
-      imageType: 'jpg',
-    },
-    {
-      id: 654883,
-      title: 'Pasta Vegetable Soup',
-      image: 'https://spoonacular.com/recipeImages/654883-312x231.jpg',
-      imageType: 'jpg',
-    },
-  ];
+interface Props {
+  recipes: RecipeInformation[]
+}
 
+function CarouselComponent({ recipes }: Props) {
   // As we have used custom buttons, we need a reference variable to
   // change the state
   const [slider, setSlider] = useState<Slider | null>(null);
@@ -129,8 +99,8 @@ function CarouselComponent() {
             },
           ]}
         >
-          {data
-            ? data.map((recipe) => (
+          {recipes
+            ? recipes.map((recipe) => (
               <RecipeCard recipe={recipe} />
             )) : <Spinner />}
         </Slider>

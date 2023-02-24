@@ -2,10 +2,10 @@ import {
   Card, CardBody, Stack, Heading, Divider, CardFooter, Button, Image, Spinner,
 } from '@chakra-ui/react';
 import React from 'react';
-import { Recipe } from '../../interfaces/Recipe';
+import { RecipeInformation } from '../../interfaces/RecipeInformation';
 
 interface Props {
-  recipe: Recipe
+  recipe: RecipeInformation
 }
 
 function RecipeCard({ recipe }: Props) {

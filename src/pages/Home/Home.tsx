@@ -1,10 +1,17 @@
-import { Heading } from '@chakra-ui/react';
+import { Heading, Spinner } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import Carousel from '../../components/Carousel/Carousel';
 import RecipeGrid from '../../components/RecipeGrid/RecipeGrid';
 import { Recipe } from '../../interfaces/Recipe';
+import SpoonacularService from '../../services/SpoonacularService';
 
 function Home() {
+  // const {
+  //   isLoading: isLoadingRecipes, data: recipes,
+  //   // eslint-disable-next-line max-len
+  // } = useQuery(['spoonacular-search'], () => SpoonacularService.searchRandomRecipes());
+
   const favoriteRecipes: Recipe[] = [
     {
       id: 654959,
@@ -56,13 +63,17 @@ function Home() {
     },
   ];
 
+  // if (isLoadingRecipes) return <Spinner size="xl" />;
+
   return (
     <div>
       <Heading as="h2" textAlign="center" marginBottom="1rem">Popular recipes</Heading>
-      <Carousel />
+      {/* {recipes
+        && <Carousel recipes={recipes} />} */}
       <Heading as="h2" textAlign="center" marginBottom="1rem">Your last favorites</Heading>
-      <RecipeGrid maxCards={5} recipes={favoriteRecipes} />
+      <RecipeGrid maxCards={4} recipes={favoriteRecipes} />
       <Heading as="h2" textAlign="center" marginBottom="1rem">Some recipes you may like</Heading>
+      <RecipeGrid maxCards={4} recipes={favoriteRecipes} />
     </div>
   );
 }

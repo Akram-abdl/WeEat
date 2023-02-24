@@ -2,8 +2,9 @@ import { z } from 'zod';
 import ingredientsAutocompleteResponse from '../data/ingredientsAutocompleteResponse';
 import recipesSearchedResponse from '../data/recipesSearchedResponse';
 import { IngredientAutoComplete } from '../interfaces/IngredientAutoComplete';
+import RandomRecipes from '../interfaces/RandomRecipes';
 import { Recipe, RecipeSchema } from '../interfaces/Recipe';
-import { RecipeInformationSchema } from '../interfaces/RecipeInformation';
+import { RecipeInformation, RecipeInformationSchema } from '../interfaces/RecipeInformation';
 import { SpoonacularSearchDataSchema, IngredientsAutocompleteResponseData } from '../interfaces/SpoonacularData';
 
 interface SearchRecipesParameters {
@@ -52,15 +53,15 @@ class SpoonacularService {
     return recipesInformation;
   }
 
-  async searchRandomRecipes(): Promise<Recipe[]> {
-    const parameters: AutoCompleteIngredientParameters = { query: 'random=5' };
+  async searchRandomRecipes(): Promise<RecipeInformation[]> {
+    const parameters = { number: 5 };
     const response = await this.call('recipes/random', parameters);
 
     const data = await response.json();
 
-    const spoonacularData = SpoonacularSearchDataSchema.parse(data);
+    const randomRecipes: RandomRecipes = data;
 
-    const recipes = z.array(RecipeSchema).parse(spoonacularData.results);
+    const recipes = z.array(RecipeInformationSchema).parse(randomRecipes.recipes);
 
     return recipes;
   }
