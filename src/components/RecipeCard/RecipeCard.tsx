@@ -8,7 +8,7 @@ interface Props {
   recipe: Recipe
 }
 
-function CarouselCard({ recipe }: Props) {
+function RecipeCard({ recipe }: Props) {
   return (
     <div>
       {recipe
@@ -39,4 +39,4 @@ function CarouselCard({ recipe }: Props) {
   );
 }
 
-export default CarouselCard;
+export default RecipeCard;

@@ -9,8 +9,8 @@ import {
 // And react-slick as our Carousel Lib
 import Slider from 'react-slick';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
-import CarouselCard from './CarouselCard';
 import { Recipe } from '../../interfaces/Recipe';
+import RecipeCard from '../RecipeCard/RecipeCard';
 
 function CarouselComponent() {
   // TO REMOVE : test values
@@ -123,7 +123,7 @@ function CarouselComponent() {
         >
           {data
             ? data.map((recipe) => (
-              <CarouselCard recipe={recipe} />
+              <RecipeCard recipe={recipe} />
             )) : <Spinner />}
         </Slider>
       </Box>
