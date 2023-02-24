@@ -9,6 +9,7 @@ import {
 import { FaGithub } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 import SocialButton from '../SocialButton/SocialButton';
+import SelectLanguage from '../SelectLanguage/SelectLanguage';
 
 function Footer() {
   const { t } = useTranslation();
@@ -29,6 +30,7 @@ function Footer() {
           align={{ base: 'center', md: 'center' }}
         >
           <Text>{t('footer-rights-reserved')}</Text>
+          <SelectLanguage />
           <Stack direction="row" spacing={6}>
             <SocialButton label="Github WeEat" href="https://github.com/Akram-abdl/WeEat">
               <FaGithub />
