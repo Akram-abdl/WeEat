@@ -22,6 +22,7 @@ function SelectLanguage() {
     <Flex gap={3}>
       {Object.entries(LANGUAGES_FLAG).map(([language, flag]) => (
         <Flag
+          key={language}
           className={`flag ${language === currentLanguage ? 'activated' : 'deactivated'}`}
           code={flag}
           width={28}

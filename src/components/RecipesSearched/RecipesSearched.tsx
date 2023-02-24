@@ -1,19 +1,18 @@
 import React from 'react';
 import {
-  Box, Flex, Grid, IconButton, Spinner, Stack, Image, Heading, SimpleGrid,
+  Box, Flex, Grid, Spinner, Stack, Image, Heading, SimpleGrid,
 } from '@chakra-ui/react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { FaHeart } from 'react-icons/fa';
+import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import filterIngredientsAtom from '../../atoms/filtersAtom';
 import SpoonacularService from '../../services/SpoonacularService';
 import UserService from '../../services/UserService';
 import { auth } from '../../utils/firebaseSetup';
+import RecipeHeartButton from '../RecipeHeartButton/RecipeHeartButton';
 
 function RecipesSearched() {
   const [queryParameters] = useSearchParams();
-  const queryClient = useQueryClient();
 
   const searchTerm = queryParameters.get('searchTerm') ?? '';
   const filterIngredients = useRecoilValue(filterIngredientsAtom);
@@ -26,33 +25,9 @@ function RecipesSearched() {
   } = useQuery(['spoonacular-search', searchTerm, filterIngredients], () => SpoonacularService.searchRecipes({ query: searchTerm, includeIngredients: filterIngredients }));
 
   const {
-    isLoading: isLoadingFavorites, data: favorites, refetch: refetchFavorites,
+    isLoading: isLoadingFavorites, data: favorites,
   } = useQuery(['favorites-search', currentUser?.uid], () => currentUser && UserService.getFavorites(currentUser.uid));
 
-  const mutateAddFavorite = useMutation((recipeId: number) => UserService.addFavorite(currentUser?.uid || '', recipeId), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['favorites-search', currentUser?.uid]);
-    },
-  });
-
-  const mutateRemoveFavorite = useMutation((recipeId: number) => UserService.removeFavorite(currentUser?.uid || '', recipeId), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['favorites-search', currentUser?.uid]);
-    },
-  });
-
-  const handleFavoriteClick = async (recipeId: number) => {
-    if (currentUser && favorites) {
-      if (favorites.includes(recipeId)) {
-        await mutateRemoveFavorite.mutateAsync(recipeId);
-      } else {
-        await mutateAddFavorite.mutateAsync(recipeId);
-      }
-
-      // update the favorites query data
-      refetchFavorites();
-    }
-  };
   if (isLoadingRecipes || isLoadingFavorites) return <Spinner size="xl" />;
 
   return (
@@ -95,23 +70,10 @@ function RecipesSearched() {
                     },
                   }}
                 >
-                  <IconButton
-                    icon={<FaHeart color={favorites && favorites.includes(recipe.id) ? 'red' : 'white'} />}
-                    aria-label="favorite"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      handleFavoriteClick(recipe.id);
-                    }}
-                    position="absolute"
-                    top="0"
-                    right="0"
-                    m={2}
-                    size="md"
-                    colorScheme="transparent"
-                    // border="2px"
-                    // borderColor='red'
-                    zIndex="1"
-                  />
+                  {Array.isArray(favorites) && !!currentUser
+                    && (
+                      <RecipeHeartButton userId={currentUser.uid} recipeId={recipe.id} isFavorite={favorites.includes(recipe.id)} />
+                    )}
                   <Image
                     rounded="lg"
                     height="230px"
