@@ -52,7 +52,6 @@ function NavBar() {
         <Flex alignItems="center" ml={8}>
           <Button
             variant="outline"
-            colorScheme="teal"
             size="sm"
             mr={4}
           >
