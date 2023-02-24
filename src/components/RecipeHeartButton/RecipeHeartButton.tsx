@@ -48,15 +48,8 @@ function RecipeHeartButton({ userId, recipeId, isFavorite }: Props) {
         event.preventDefault();
         handleFavoriteClick();
       }}
-      position="absolute"
-      top="0"
-      right="0"
-      m={2}
       size="md"
       colorScheme="transparent"
-      // border="2px"
-      // borderColor='red'
-      zIndex="1"
     />
   );
 }
