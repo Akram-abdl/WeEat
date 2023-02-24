@@ -11,7 +11,7 @@ const en: ResourceLanguage = {
     'my-recipes': 'My recipes',
     'footer-rights-reserved': '© 2022 WeEat. All rights reserved',
     ingredients: 'Ingredients',
-    'ingredients-filter-input': 'Choose some ingredients...',
+    'ingredients-filter-input': 'Type some ingredients...',
   },
 };
 export default en;

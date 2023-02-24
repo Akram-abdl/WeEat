@@ -93,6 +93,7 @@ function NavBar() {
             colorScheme="teal"
             size="sm"
             mr={4}
+            onClick={handleFavorite}
           >
             {t('my-recipes')}
           </Button>
