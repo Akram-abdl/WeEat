@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Box, Flex, Grid, IconButton, Img, Spinner,
+  Box, Flex, Grid, IconButton, Spinner, Stack, Image, Heading, SimpleGrid,
 } from '@chakra-ui/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { FaHeart } from 'react-icons/fa';
@@ -57,41 +57,80 @@ function RecipesSearched() {
 
   return (
     <Grid gridTemplateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={2}>
-      {recipes && recipes.map((recipe) => (
-        <Flex key={recipe.id} justifyContent="space-between" flexDir="column">
-          <Box
-            bg="gray.100"
-            boxShadow="2xl"
-            rounded="lg"
-            p={4}
-            _hover={{ bg: 'gray.200' }}
-            position="relative"
-          >
-            <IconButton
-              icon={<FaHeart color={favorites && favorites.includes(recipe.id) ? 'red' : 'white'} />}
-              aria-label="favorite"
-              onClick={(event) => {
-                event.preventDefault();
-                handleFavoriteClick(recipe.id);
-              }}
-              position="absolute"
-              top="0"
-              right="0"
-              m={2}
-              size="md"
-              colorScheme="transparent"
-              // border="2px"
-              // borderColor='red'
-              zIndex="1"
-            />
+      {recipes && (
+        <SimpleGrid minChildWidth="30em">
+          {recipes.map((recipe) => (
+            <Flex key={recipe.id} p={4} bg="white" boxShadow="md" borderRadius="md" width="20em" margin="1em" marginTop="3em">
+              <Box
+                role="group"
+                p={6}
+                maxW="330px"
+                w="full"
+                bg="gray.200"
+                boxShadow="2xl"
+                rounded="lg"
+                pos="relative"
+                zIndex={1}
+              >
+                <Box
+                  rounded="lg"
+                  mt={-12}
+                  pos="relative"
+                  height="230px"
+                  _after={{
+                    transition: 'all .3s ease',
+                    content: '""',
+                    w: 'full',
+                    h: 'full',
+                    pos: 'absolute',
+                    top: 5,
+                    left: 0,
+                    backgroundImage: `url(${recipe.image})`,
+                    filter: 'blur(15px)',
+                    zIndex: -1,
+                  }}
+                  _groupHover={{
+                    _after: {
+                      filter: 'blur(20px)',
+                    },
+                  }}
+                >
+                  <IconButton
+                    icon={<FaHeart color={favorites && favorites.includes(recipe.id) ? 'red' : 'white'} />}
+                    aria-label="favorite"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      handleFavoriteClick(recipe.id);
+                    }}
+                    position="absolute"
+                    top="0"
+                    right="0"
+                    m={2}
+                    size="md"
+                    colorScheme="transparent"
+                    // border="2px"
+                    // borderColor='red'
+                    zIndex="1"
+                  />
+                  <Image
+                    rounded="lg"
+                    height="230px"
+                    width="282px"
+                    objectFit="cover"
+                    src={recipe.image}
+                  />
+                </Box>
+                <Stack pt={10} align="center">
+                  <Heading fontSize="2xl" fontFamily="body" fontWeight={500}>
+                    {recipe.title}
+                  </Heading>
 
-            <Box textAlign="center">
-              {recipe.title}
-            </Box>
-            <Img src={recipe.image} />
-          </Box>
-        </Flex>
-      ))}
+                </Stack>
+              </Box>
+            </Flex>
+          ))}
+        </SimpleGrid>
+      )}
     </Grid>
   );
 }
