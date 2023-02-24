@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   IconButton,
@@ -10,7 +10,7 @@ import {
 import Slider from 'react-slick';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import CarouselCard from './CarouselCard';
-import Recipe from '../../interfaces/Recipe';
+import { Recipe } from '../../interfaces/Recipe';
 
 function CarouselComponent() {
   // TO REMOVE : test values
@@ -20,51 +20,36 @@ function CarouselComponent() {
       title: 'Pasta With Tuna',
       image: 'https://spoonacular.com/recipeImages/654959-312x231.jpg',
       imageType: 'jpg',
-      nutrition: {
-        nutrients: [
-          {
-            name: 'Fat',
-            amount: 10.3185,
-            unit: 'g',
-          },
-        ],
-      },
     },
     {
       id: 654857,
       title: 'Pasta On The Border',
       image: 'https://spoonacular.com/recipeImages/654857-312x231.jpg',
       imageType: 'jpg',
-      nutrition: {
-        nutrients: [
-          {
-            name: 'Fat',
-            amount: 19.8995,
-            unit: 'g',
-          },
-        ],
-      },
     },
     {
       id: 654883,
       title: 'Pasta Vegetable Soup',
       image: 'https://spoonacular.com/recipeImages/654883-312x231.jpg',
       imageType: 'jpg',
-      nutrition: {
-        nutrients: [
-          {
-            name: 'Fat',
-            amount: 3.36382,
-            unit: 'g',
-          },
-        ],
-      },
+    },
+    {
+      id: 654883,
+      title: 'Pasta Vegetable Soup',
+      image: 'https://spoonacular.com/recipeImages/654883-312x231.jpg',
+      imageType: 'jpg',
+    },
+    {
+      id: 654883,
+      title: 'Pasta Vegetable Soup',
+      image: 'https://spoonacular.com/recipeImages/654883-312x231.jpg',
+      imageType: 'jpg',
     },
   ];
 
   // As we have used custom buttons, we need a reference variable to
   // change the state
-  const [slider, setSlider] = React.useState<Slider | null>(null);
+  const [slider, setSlider] = useState<Slider | null>(null);
 
   return (
     <Box
@@ -87,10 +72,9 @@ function CarouselComponent() {
       {/* Left Icon */}
       <IconButton
         aria-label="left-arrow"
-        variant="ghost"
         position="absolute"
         left="0%"
-        bottom="0%"
+        bottom="50%"
         transform="translate(0%, -50%)"
         zIndex={2}
         onClick={() => slider?.slickPrev()}
@@ -100,10 +84,9 @@ function CarouselComponent() {
       {/* Right Icon */}
       <IconButton
         aria-label="right-arrow"
-        variant="ghost"
         position="absolute"
         right="0%"
-        bottom="0%"
+        bottom="50%"
         transform="translate(0%, -50%)"
         zIndex={2}
         onClick={() => slider?.slickNext()}
@@ -114,14 +97,28 @@ function CarouselComponent() {
       <Slider
         dots
         arrows={false}
-        fade
         infinite
-        autoplay
         speed={500}
-        autoplaySpeed={5000}
-        slidesToShow={1}
+        slidesToShow={3}
         slidesToScroll={1}
+        initialSlide={0}
+        centerMode
+        centerPadding="15%"
         ref={(sliderItem) => setSlider(sliderItem)}
+        responsive={[
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 2,
+            },
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 1,
+            },
+          },
+        ]}
       >
         {data
           ? data.map((recipe) => (
