@@ -22,11 +22,19 @@ function RecipesSearched() {
   const {
     isLoading: isLoadingRecipes, data: recipes,
     // eslint-disable-next-line max-len
-  } = useQuery(['spoonacular-search', searchTerm, filterIngredients], () => SpoonacularService.searchRecipes({ query: searchTerm, includeIngredients: filterIngredients }));
+  } = useQuery(
+    ['spoonacular-search', searchTerm, filterIngredients],
+    () => SpoonacularService.searchRecipes({ query: searchTerm, includeIngredients: filterIngredients }),
+    { retry: false, refetchOnWindowFocus: false },
+  );
 
   const {
     isLoading: isLoadingFavorites, data: favorites,
-  } = useQuery(['favorites-search', currentUser?.uid], () => currentUser && UserService.getFavorites(currentUser.uid));
+  } = useQuery(
+    ['favorites-search', currentUser?.uid],
+    () => currentUser && UserService.getFavorites(currentUser.uid),
+    { retry: false, refetchOnWindowFocus: false },
+  );
 
   if (isLoadingRecipes || isLoadingFavorites) return <Spinner size="xl" />;
 

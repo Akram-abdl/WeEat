@@ -41,6 +41,7 @@ function IngredientFilter() {
   const [trigger, query] = useLazyQuery(
     ['spoonacular-search-ingredient', searchTerm],
     () => SpoonacularService.autoCompleteIngredient({ query: searchTerm }),
+    { retry: false, refetchOnWindowFocus: false },
   );
 
   const setFilterIngredients = useSetRecoilState(filterIngredientsAtom);
