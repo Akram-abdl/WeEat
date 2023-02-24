@@ -1,5 +1,6 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import Root from './layouts/Root/Root';
 import PageNotFound from './pages/Errors/PageNotFound';
 
@@ -32,9 +33,16 @@ const router = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path: 'favorites',
-        element: <Favorites />,
+        path: '',
+        element: <ProtectedRoute />,
+        children: [
+          {
+            path: 'favorites',
+            element: <Favorites />,
+          },
+        ],
       },
+
       {
         path: 'search',
         element: <Search />,
