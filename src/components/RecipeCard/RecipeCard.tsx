@@ -20,7 +20,7 @@ function RecipeCard({ recipe }: Props) {
                 alt={recipe.title}
                 borderRadius="lg"
               />
-              <Stack mt="6" spacing="3">
+              <Stack mt="6" spacing="3" align="center">
                 <Heading size="md">{recipe.title}</Heading>
               </Stack>
             </CardBody>
