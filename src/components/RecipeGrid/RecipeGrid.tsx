@@ -1,7 +1,7 @@
 import React from 'react';
 import { Flex, Grid, GridItem } from '@chakra-ui/react';
-import { Recipe } from '../../interfaces/Recipe';
 import RecipeCard from '../RecipeCard/RecipeCard';
+import { Recipe } from '../../interfaces/Recipe';
 
 interface Props {
   recipes: Recipe[]

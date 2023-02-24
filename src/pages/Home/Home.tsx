@@ -3,77 +3,45 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import Carousel from '../../components/Carousel/Carousel';
 import RecipeGrid from '../../components/RecipeGrid/RecipeGrid';
-import { Recipe } from '../../interfaces/Recipe';
 import SpoonacularService from '../../services/SpoonacularService';
+import UserService from '../../services/UserService';
+import { auth } from '../../utils/firebaseSetup';
 
 function Home() {
+  const user = auth.currentUser;
+
   const {
-    isLoading: isLoadingRecipes, data: recipes,
-    // eslint-disable-next-line max-len
+    isLoading: isLoadingUser, data: userDocument,
+  } = useQuery(['firebase-search', user?.uid], () => user && UserService.getUser(user.uid));
+
+  const {
+    isLoading, data,
+  } = useQuery(
+    ['favoriteBulk-search', userDocument],
+    () => userDocument && SpoonacularService.searchRecipeInformationBulk({ ids: userDocument.favorites }),
+  );
+
+  const {
+    isLoading: isLoadingSuggestedRecipes, data: suggestedRecipes,
+  } = useQuery(['spoonacular-search', userDocument], () => userDocument && SpoonacularService.searchRecipes({ query: 'vegetarian' }));
+
+  const {
+    isLoading: isLoadingRandomRecipes, data: randomRecipes,
   } = useQuery(['spoonacular-search'], () => SpoonacularService.searchRandomRecipes());
 
-  const favoriteRecipes: Recipe[] = [
-    {
-      id: 654959,
-      title: 'Pasta With Tuna',
-      image: 'https://spoonacular.com/recipeImages/654959-312x231.jpg',
-      imageType: 'jpg',
-    },
-    {
-      id: 654857,
-      title: 'Pasta On The Border',
-      image: 'https://spoonacular.com/recipeImages/654857-312x231.jpg',
-      imageType: 'jpg',
-    },
-    {
-      id: 654883,
-      title: 'Pasta Vegetable Soup',
-      image: 'https://spoonacular.com/recipeImages/654883-312x231.jpg',
-      imageType: 'jpg',
-    },
-    {
-      id: 654883,
-      title: 'Pasta Vegetable Soup',
-      image: 'https://spoonacular.com/recipeImages/654883-312x231.jpg',
-      imageType: 'jpg',
-    },
-    {
-      id: 654959,
-      title: 'Pasta With Tuna',
-      image: 'https://spoonacular.com/recipeImages/654959-312x231.jpg',
-      imageType: 'jpg',
-    },
-    {
-      id: 654857,
-      title: 'Pasta On The Border',
-      image: 'https://spoonacular.com/recipeImages/654857-312x231.jpg',
-      imageType: 'jpg',
-    },
-    {
-      id: 654883,
-      title: 'Pasta Vegetable Soup',
-      image: 'https://spoonacular.com/recipeImages/654883-312x231.jpg',
-      imageType: 'jpg',
-    },
-    {
-      id: 654883,
-      title: 'Pasta Vegetable Soup',
-      image: 'https://spoonacular.com/recipeImages/654883-312x231.jpg',
-      imageType: 'jpg',
-    },
-  ];
-
-  if (isLoadingRecipes) return <Spinner size="xl" />;
+  if (isLoadingRandomRecipes && isLoadingSuggestedRecipes && isLoadingUser && isLoading) return <Spinner size="xl" />;
 
   return (
     <div>
       <Heading as="h2" textAlign="center" marginBottom="1rem">Popular recipes</Heading>
-      {recipes
-        && <Carousel recipes={recipes} />}
+      {randomRecipes
+        && <Carousel recipes={randomRecipes} />}
       <Heading as="h2" textAlign="center" marginBottom="1rem">Your last favorites</Heading>
-      <RecipeGrid maxCards={4} recipes={favoriteRecipes} />
+      {data
+        && <RecipeGrid maxCards={data.length} recipes={data} />}
       <Heading as="h2" textAlign="center" marginBottom="1rem">Some recipes you may like</Heading>
-      <RecipeGrid maxCards={4} recipes={favoriteRecipes} />
+      {suggestedRecipes
+        && <RecipeGrid maxCards={suggestedRecipes.length} recipes={suggestedRecipes} />}
     </div>
   );
 }

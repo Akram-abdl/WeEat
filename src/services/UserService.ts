@@ -1,5 +1,7 @@
 import { User as UserFirebase } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+  doc, getDoc, setDoc,
+} from 'firebase/firestore';
 import { User as UserModel } from '../interfaces/User';
 import { firestore } from '../utils/firebaseSetup';
 
@@ -17,6 +19,20 @@ class UserService {
   async getUserDocument(uid: string) {
     const userDocument = await getDoc(doc(firestore, this.tableName, uid));
     return userDocument;
+  }
+
+  async getUser(uid: string) {
+    const userDocument = await this.getUserDocument(uid);
+    if (!userDocument) {
+      throw new Error('User not found');
+    }
+
+    const user = userDocument.data();
+
+    if (!user) {
+      throw new Error('User undefined');
+    }
+    return user;
   }
 
   async addFavorite(uid: string, recipeId: number) {
