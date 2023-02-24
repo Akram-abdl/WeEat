@@ -23,20 +23,8 @@ function NavBar() {
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
-    try {
-      await auth.signOut();
-      navigate('/login');
-    } catch (error: any) {
-      console.log(error.message);
-    }
-  };
-
-  const handleProfile = async () => {
-    try {
-      navigate('/profile');
-    } catch (error: any) {
-      console.log(error.message);
-    }
+    await auth.signOut();
+    navigate('/login');
   };
 
   const handleFavorite = async () => {
@@ -60,10 +48,9 @@ function NavBar() {
         <Flex alignItems="center" ml={8}>
           <Button
             variant="outline"
-            colorScheme="teal"
             size="sm"
             mr={4}
-            onClick={handleFavorite}
+            onClick={() => navigate('/favorites')}
           >
             {t('my-recipes')}
           </Button>
@@ -88,7 +75,7 @@ function NavBar() {
               ) : (
                 <MenuItem onClick={() => navigate('/login')}>{t('login')}</MenuItem>
               )}
-              <MenuItem onClick={handleProfile}>{t('profile')}</MenuItem>
+              <MenuItem onClick={() => navigate('/profile')}>{t('profile')}</MenuItem>
               <MenuDivider />
             </MenuList>
           </Menu>

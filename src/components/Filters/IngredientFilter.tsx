@@ -72,6 +72,7 @@ function IngredientFilter() {
         onInputChange={handleSearch}
         getOptionLabel={(v) => v.name}
         getOptionValue={(v) => v.name}
+        colorScheme="teal"
       />
     </Box>
   );

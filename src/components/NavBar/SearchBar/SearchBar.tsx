@@ -39,7 +39,7 @@ function SearchBar() {
         value={searchTerm}
       />
       <InputRightElement mr={1}>
-        <Button size="sm" variant="solid" colorScheme="teal" onClick={onSearch}>
+        <Button size="sm" variant="solid" onClick={onSearch}>
           <SearchIcon />
         </Button>
       </InputRightElement>
