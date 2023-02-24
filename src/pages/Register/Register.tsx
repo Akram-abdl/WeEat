@@ -44,8 +44,7 @@ function Register() {
       const newUser: User = {
         favorites: [],
         intolerances: [],
-        isVegan: false,
-        isVegetarian: false,
+        diet: '',
       };
 
       UserService.createOrUpdateUserDocument(myUser, newUser);

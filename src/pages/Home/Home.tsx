@@ -1,4 +1,4 @@
-import { Heading, Spinner } from '@chakra-ui/react';
+import { Heading, Spinner, Text } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import Carousel from '../../components/Carousel/Carousel';
@@ -34,11 +34,19 @@ function Home() {
   return (
     <div>
       <Heading as="h2" textAlign="center" marginBottom="1rem">Popular recipes</Heading>
-      {randomRecipes
-        && <Carousel recipes={randomRecipes} />}
+      {
+        randomRecipes
+          ? <Carousel recipes={randomRecipes} />
+          : <Text textAlign="center" marginBottom="1rem">Quota exhausted !</Text>
+      }
+
       <Heading as="h2" textAlign="center" marginBottom="1rem">Your last favorites</Heading>
-      {data
-        && <RecipeGrid maxCards={data.length} recipes={data} />}
+      {
+        data
+          ? <RecipeGrid maxCards={data.length} recipes={data} />
+          : <Text textAlign="center" marginBottom="1rem">Quota exhausted !</Text>
+      }
+
       <Heading as="h2" textAlign="center" marginBottom="1rem">Some recipes you may like</Heading>
       {suggestedRecipes
         && <RecipeGrid maxCards={suggestedRecipes.length} recipes={suggestedRecipes} />}
