@@ -19,9 +19,11 @@ import {
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { auth } from '../../utils/firebaseSetup';
 
 function NavBar() {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
 
   const navigate = useNavigate();
@@ -55,14 +57,14 @@ function NavBar() {
     <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
       <Flex h={16} alignItems="center" justifyContent="space-between">
         <HStack spacing={8} alignItems="center" width="100%">
-          <NavLink to="/"><Text as="h1" fontSize="xl">WeEat</Text></NavLink>
+          <NavLink to="/"><Text as="h1" fontSize="xl">{t('we-eat')}</Text></NavLink>
           <InputGroup>
             <InputLeftElement pointerEvents="none">
               <SearchIcon color="gray.300" />
             </InputLeftElement>
 
             <Input
-              placeholder="Rechercher une recette, des ingrédients..."
+              placeholder={t('main-searchbar-placeholder')}
               onKeyPress={(e) => {
                 if (e.key === 'Enter') {
                   onSearch();
@@ -85,7 +87,7 @@ function NavBar() {
             size="sm"
             mr={4}
           >
-            Mes recettes
+            {t('my-recipes')}
           </Button>
           <Menu>
             <MenuButton
@@ -102,14 +104,14 @@ function NavBar() {
               />
             </MenuButton>
             <MenuList>
-              <MenuItem>Favoris</MenuItem>
+              <MenuItem>{t('favorites')}</MenuItem>
               <MenuDivider />
               {isUserLoggedIn ? (
-                <MenuItem onClick={handleSignOut}>Déconnexion</MenuItem>
+                <MenuItem onClick={handleSignOut}>{t('logout')}</MenuItem>
               ) : (
-                <MenuItem onClick={() => navigate('/login')}>Connexion</MenuItem>
+                <MenuItem onClick={() => navigate('/login')}>{t('login')}</MenuItem>
               )}
-              <MenuItem onClick={handleProfile}>Profile</MenuItem>
+              <MenuItem onClick={handleProfile}>{t('profile')}</MenuItem>
               <MenuDivider />
             </MenuList>
           </Menu>

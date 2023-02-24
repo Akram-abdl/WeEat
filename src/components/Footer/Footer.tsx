@@ -7,9 +7,12 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { FaGithub } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 import SocialButton from '../SocialButton/SocialButton';
 
 function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer>
       <Box
@@ -25,7 +28,7 @@ function Footer() {
           justify={{ base: 'center', md: 'space-between' }}
           align={{ base: 'center', md: 'center' }}
         >
-          <Text>© 2022 WeEat. All rights reserved</Text>
+          <Text>{t('footer-rights-reserved')}</Text>
           <Stack direction="row" spacing={6}>
             <SocialButton label="Github WeEat" href="https://github.com/Akram-abdl/WeEat">
               <FaGithub />
