@@ -30,6 +30,13 @@ function NavBar() {
   const { currentUser } = auth;
   const isUserLoggedIn = !!currentUser;
 
+  const handleMyRecipesClick = () => {
+    if (isUserLoggedIn) {
+      navigate('/favorites');
+    } else {
+      navigate('/login');
+    }
+  };
   return (
     <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
       <Flex h={16} alignItems="center" justifyContent="space-between">
@@ -42,7 +49,7 @@ function NavBar() {
             variant="outline"
             size="sm"
             mr={4}
-            onClick={() => navigate('/favorites')}
+            onClick={handleMyRecipesClick}
           >
             {t('my-recipes')}
           </Button>
