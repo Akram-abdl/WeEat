@@ -37,7 +37,6 @@ const useSpoonacular = () => {
 
   const {
     isLoading: isLoadingSearchRecipes, data: searchRecipes,
-    // eslint-disable-next-line max-len
   } = useQuery(
     ['spoonacular-search-recipes', searchTerm, filterIngredients],
     () => SpoonacularService.searchRecipes({ query: searchTerm, includeIngredients: filterIngredients }),

@@ -5,7 +5,7 @@ import {
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Carousel from '../../components/Carousel/Carousel';
-import RecipeGrid from '../../components/RecipeGrid/RecipeGrid';
+import RecipeHStack from '../../components/RecipeHStack/RecipeHStack';
 import useSpoonacular from '../../hooks/useSpoonacular';
 import useUser from '../../hooks/useUser';
 
@@ -31,7 +31,7 @@ function Home() {
       {isLoadingFavorites && user ? <Spinner size="xl" />
         : favorites
           ? (
-            <RecipeGrid maxCards={favorites.length} recipes={favorites} />
+            <RecipeHStack maxCards={4} recipes={favorites} />
           ) : <Text>{t('you-must-be-connected')}</Text>}
 
       <Heading as="h2" marginBottom="1rem">{t('suggestions')}</Heading>
@@ -39,7 +39,7 @@ function Home() {
       {isLoadingSuggestedRecipes && user
         ? <Spinner size="xl" />
         : suggestedRecipes
-          ? <RecipeGrid maxCards={5} recipes={suggestedRecipes} />
+          ? <RecipeHStack maxCards={4} recipes={suggestedRecipes} />
           : <Text>{t('you-must-be-connected')}</Text>}
     </Box>
   );
