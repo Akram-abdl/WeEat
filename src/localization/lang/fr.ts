@@ -7,6 +7,7 @@ const fr: ResourceLanguage = {
     favorites: 'Favoris',
     logout: 'Déconnexion',
     login: 'Connexion',
+    register: 'Inscription',
     profile: 'Profile',
     'my-recipes': 'Mes recettes',
     'footer-rights-reserved': '© 2022 WeEat. Tous droits réservés',
@@ -15,6 +16,7 @@ const fr: ResourceLanguage = {
     'popular-recipes': 'Recette populaires',
     'last-favorites': 'Vos derniers favoris',
     suggestions: 'Quelques recettes selon vos goûts',
+    'you-must-be-connected': 'Vous devez être connecté..',
   },
 };
 export default fr;
