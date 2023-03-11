@@ -56,7 +56,7 @@ function IngredientFilter() {
 
   const handleClick = (ingredientsAutoCompleted: MultiValue<IngredientAutoComplete>) => {
     setFilterIngredients(ingredientsAutoCompleted.map((ingredientAutoCompleted) => ingredientAutoCompleted.name));
-    queryClient.invalidateQueries({ queryKey: ['spoonacular-search'] });
+    queryClient.invalidateQueries({ queryKey: ['spoonacular-search-recipes'] });
   };
 
   return (

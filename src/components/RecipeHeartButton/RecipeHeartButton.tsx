@@ -1,43 +1,28 @@
 import React from 'react';
 import { IconButton } from '@chakra-ui/react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { HiHeart, HiOutlineHeart } from 'react-icons/hi';
-import UserService from '../../services/UserService';
-import { auth } from '../../utils/firebaseSetup';
 import './RecipeHeartButton.css';
+import useUser from '../../hooks/useUser';
 
 interface Props {
-  userId: string;
   recipeId: number;
   isFavorite: boolean;
 }
 
-function RecipeHeartButton({ userId, recipeId, isFavorite }: Props) {
-  const { currentUser } = auth;
-
-  const queryClient = useQueryClient();
-
-  const mutateAddFavorite = useMutation(() => UserService.addFavorite(userId, recipeId), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['favorites-search']);
-    },
-  });
-
-  const mutateRemoveFavorite = useMutation(() => UserService.removeFavorite(userId, recipeId), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['favorites-search']);
-    },
-  });
+function RecipeHeartButton({ recipeId, isFavorite }: Props) {
+  const { user, mutationAddFavorite, mutationRemoveFavorite } = useUser();
 
   const handleFavoriteClick = async () => {
-    if (currentUser) {
+    if (user) {
       if (isFavorite) {
-        await mutateRemoveFavorite.mutateAsync();
+        await mutationRemoveFavorite.mutateAsync(recipeId);
       } else {
-        await mutateAddFavorite.mutateAsync();
+        await mutationAddFavorite.mutateAsync(recipeId);
       }
     }
   };
+
+  if (!user) return null;
 
   return (
     <IconButton

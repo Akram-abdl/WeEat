@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SearchIcon } from '@chakra-ui/icons';
 import {
   Button, Input, InputGroup, InputLeftElement, InputRightElement,
@@ -11,7 +11,9 @@ function SearchBar() {
 
   const [queryParameters] = useSearchParams();
 
-  const [searchTerm, setSearchTerm] = useState(queryParameters.get('searchTerm') ?? '');
+  const searchTermFromUrl = queryParameters.get('searchTerm') ?? '';
+
+  const [searchTerm, setSearchTerm] = useState(searchTermFromUrl);
 
   const navigate = useNavigate();
 
@@ -20,6 +22,10 @@ function SearchBar() {
 
     navigate(`/search?searchTerm=${searchTerm}`);
   };
+
+  useEffect(() => {
+    setSearchTerm(searchTermFromUrl);
+  }, [searchTermFromUrl]);
 
   return (
     <InputGroup>

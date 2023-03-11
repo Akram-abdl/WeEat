@@ -101,7 +101,7 @@ function CarouselComponent({ recipes }: Props) {
         >
           {recipes
             ? recipes.map((recipe) => (
-              <RecipeCard recipe={recipe} />
+              <RecipeCard recipe={recipe} key={recipe.id} />
             )) : <Spinner />}
         </Slider>
       </Box>

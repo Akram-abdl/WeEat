@@ -1,62 +1,29 @@
 import React from 'react';
 import {
-  Box, Flex, Heading, SimpleGrid, Stack, Image, Spinner, IconButton,
+  Box, Flex, Heading, SimpleGrid, Stack, Image, Spinner,
 } from '@chakra-ui/react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { FaHeart } from 'react-icons/fa';
-import SpoonacularService from '../../services/SpoonacularService';
-import UserService from '../../services/UserService';
+import { Navigate } from 'react-router-dom';
 // import UserService from '../../services/UserService';
-import { auth } from '../../utils/firebaseSetup';
+import useUser from '../../hooks/useUser';
+import useSpoonacular from '../../hooks/useSpoonacular';
+import RecipeHeartButton from '../../components/RecipeHeartButton/RecipeHeartButton';
 
 function Favorites() {
-  // const [queryParameters] = useSearchParams();
-  const queryClient = useQueryClient();
-  const myUser = auth.currentUser;
-  const { currentUser } = auth;
-  console.log('myUser', myUser);
-  // const myIds = [782585, 715497, 716406];
   const {
-    isLoading: isLoadingFavorites, data: favorites, refetch: refetchFavorites,
-  } = useQuery(['favoritespage-search', myUser?.uid], () => myUser && UserService.getFavorites(myUser.uid));
-  const mutateAddFavorite = useMutation((recipeId: number) => UserService.addFavorite(myUser?.uid || '', recipeId), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['favoritespage-search', myUser?.uid]);
-    },
-  });
+    user, favorites,
+  } = useUser();
 
-  const mutateRemoveFavorite = useMutation((recipeId: number) => UserService.removeFavorite(myUser?.uid || '', recipeId), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['favoritespage-search', myUser?.uid]);
-    },
-  });
-  const handleFavoriteClick = async (recipeId: number) => {
-    if (currentUser && favorites) {
-      if (favorites.includes(recipeId)) {
-        await mutateRemoveFavorite.mutateAsync(recipeId);
-      } else {
-        await mutateAddFavorite.mutateAsync(recipeId);
-      }
+  const { favorites: favoritesRecipes, isLoadingFavorites: isLoadingFavoritesRecipes } = useSpoonacular();
 
-      // update the favorites query data
-      refetchFavorites();
-    }
-  };
-  const {
-    isLoading, data,
-  } = useQuery(
-    ['favoriteBulk-search', favorites],
-    () => favorites && SpoonacularService.searchRecipeInformationBulk({ ids: favorites }),
-    { retry: false, refetchOnWindowFocus: false },
-  );
-  console.log('favorites', favorites, 'data', data);
+  if (!user) return <Navigate to="/" />;
+
   return (
     <Box p={4}>
       <Heading as="h2" size="lg" mb={4}>My Favorites</Heading>
-      {isLoading && isLoadingFavorites && <Spinner size="xl" />}
-      {data && (
+      {isLoadingFavoritesRecipes && <Spinner size="xl" />}
+      {!!favoritesRecipes && !!favorites && (
         <SimpleGrid minChildWidth="30em">
-          {data.map((recipe) => (
+          {favoritesRecipes.map((recipe) => (
             <Flex key={recipe.id} p={4} bg="white" boxShadow="md" borderRadius="md" width="20em" margin="1em" marginTop="3em">
               <Box
                 role="group"
@@ -92,23 +59,7 @@ function Favorites() {
                     },
                   }}
                 >
-                  <IconButton
-                    icon={<FaHeart color={favorites && favorites.includes(recipe.id) ? 'red' : 'white'} />}
-                    aria-label="favorite"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      handleFavoriteClick(recipe.id);
-                    }}
-                    position="absolute"
-                    top="0"
-                    right="0"
-                    m={2}
-                    size="md"
-                    colorScheme="transparent"
-                    // border="2px"
-                    // borderColor='red'
-                    zIndex="1"
-                  />
+                  <RecipeHeartButton recipeId={recipe.id} isFavorite={favorites.includes(recipe.id)} />
                   <Image
                     rounded="lg"
                     height="230px"

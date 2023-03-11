@@ -1,48 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box, Flex, Grid, Spinner, Stack, Image, Heading, SimpleGrid,
 } from '@chakra-ui/react';
-import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import filterIngredientsAtom from '../../atoms/filtersAtom';
-import SpoonacularService from '../../services/SpoonacularService';
-import UserService from '../../services/UserService';
-import { auth } from '../../utils/firebaseSetup';
 import RecipeHeartButton from '../RecipeHeartButton/RecipeHeartButton';
+import useSpoonacular from '../../hooks/useSpoonacular';
+import useUser from '../../hooks/useUser';
 
 function RecipesSearched() {
   const [queryParameters] = useSearchParams();
 
+  const { user, favorites } = useUser();
+
   const searchTerm = queryParameters.get('searchTerm') ?? '';
-  const filterIngredients = useRecoilValue(filterIngredientsAtom);
-
-  const { currentUser } = auth;
 
   const {
-    isLoading: isLoadingRecipes, data: recipes,
-    // eslint-disable-next-line max-len
-  } = useQuery(
-    ['spoonacular-search', searchTerm, filterIngredients],
-    () => SpoonacularService.searchRecipes({ query: searchTerm, includeIngredients: filterIngredients }),
-    { retry: false, refetchOnWindowFocus: false },
-  );
+    setSearchTerm, isLoadingSearchRecipes, searchRecipes,
+  } = useSpoonacular();
 
-  const {
-    isLoading: isLoadingFavorites, data: favorites,
-  } = useQuery(
-    ['favorites-search', currentUser?.uid],
-    () => currentUser && UserService.getFavorites(currentUser.uid),
-    { retry: false, refetchOnWindowFocus: false },
-  );
+  useEffect(() => {
+    setSearchTerm(searchTerm);
+  }, [searchTerm]);
 
-  if (isLoadingRecipes || isLoadingFavorites) return <Spinner size="xl" />;
+  if (isLoadingSearchRecipes) return <Spinner size="xl" />;
 
   return (
     <Grid gridTemplateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={2}>
-      {recipes && (
+      {searchRecipes && (
         <SimpleGrid minChildWidth="30em">
-          {recipes.map((recipe) => (
+          {searchRecipes.map((recipe) => (
             <Flex key={recipe.id} p={4} bg="white" boxShadow="md" borderRadius="md" width="20em" margin="1em" marginTop="3em">
               <Box
                 role="group"
@@ -78,9 +64,9 @@ function RecipesSearched() {
                     },
                   }}
                 >
-                  {Array.isArray(favorites) && !!currentUser
+                  {Array.isArray(favorites) && !!user
                     && (
-                      <RecipeHeartButton userId={currentUser.uid} recipeId={recipe.id} isFavorite={favorites.includes(recipe.id)} />
+                      <RecipeHeartButton recipeId={recipe.id} isFavorite={favorites.includes(recipe.id)} />
                     )}
                   <Image
                     rounded="lg"
