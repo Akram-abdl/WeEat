@@ -12,6 +12,7 @@ import {
   HStack,
   Radio,
   Button,
+  useToast,
 } from '@chakra-ui/react';
 import { User as UserFirebase } from 'firebase/auth';
 import { auth } from '../../utils/firebaseSetup';
@@ -23,6 +24,7 @@ export default function Profile() {
   const [userData, setUserData] = useState<UserModel>();
   const [diet, setDiet] = useState('');
   const bg = useColorModeValue('gray.100', 'gray.700');
+  const toast = useToast();
 
   useEffect(() => {
     async function fetchData() {
@@ -47,6 +49,12 @@ export default function Profile() {
     if (userData) {
       userData.diet = diet;
       await UserService.updateDiet(currentUser.uid, userData.diet);
+      toast({
+        title: 'Diet preference saved.',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
