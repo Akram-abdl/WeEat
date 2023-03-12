@@ -17,6 +17,8 @@ const fr: ResourceLanguage = {
     'last-favorites': 'Vos derniers favoris',
     suggestions: 'Quelques recettes selon vos goûts',
     'you-must-be-connected': 'Vous devez être connecté..',
+    summary: 'Sommaire',
+    instructions: 'Instructions',
   },
 };
 export default fr;

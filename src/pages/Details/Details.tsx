@@ -2,6 +2,7 @@ import {
   Box, Flex, Heading, Spinner, Stack, Image, ListItem, UnorderedList,
 } from '@chakra-ui/react';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { getDetails } from '../../hooks/useSpoonacular';
 import { Ingredient } from '../../interfaces/Ingredient';
@@ -9,6 +10,7 @@ import PageNotFound from '../Errors/PageNotFound';
 
 function Details() {
   const { id } = useParams();
+  const { t } = useTranslation();
 
   if (!id || !+id) {
     return (<PageNotFound />);
@@ -78,7 +80,7 @@ function Details() {
                 </Heading>
 
                 <Heading fontSize="2xl" fontFamily="body" fontWeight={500}>
-                  Ingredients
+                  {t('ingredients')}
                 </Heading>
 
                 <UnorderedList>
@@ -88,12 +90,12 @@ function Details() {
                 </UnorderedList>
 
                 <Heading fontSize="2xl" fontFamily="body" fontWeight={500}>
-                  Sommaire
+                  {t('summary')}
                 </Heading>
                 <div dangerouslySetInnerHTML={{ __html: recipeDetails.summary }} />
 
                 <Heading fontSize="2xl" fontFamily="body" fontWeight={500}>
-                  Instructions
+                  {t('instructions')}
                 </Heading>
                 <div dangerouslySetInnerHTML={{ __html: recipeDetails.instructions }} />
 

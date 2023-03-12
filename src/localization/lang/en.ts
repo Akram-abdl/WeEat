@@ -17,6 +17,8 @@ const en: ResourceLanguage = {
     'last-favorites': 'Your last favorites',
     suggestions: 'Some recipes you may like',
     'you-must-be-connected': 'You must be connected...',
+    summary: 'Summary',
+    instructions: 'Instructions',
   },
 };
 export default en;
