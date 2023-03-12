@@ -1,6 +1,6 @@
 import { User as UserFirebase } from 'firebase/auth';
 import {
-  doc, getDoc, setDoc,
+  doc, getDoc, setDoc, updateDoc,
 } from 'firebase/firestore';
 import { User as UserModel } from '../interfaces/User';
 import { firestore } from '../utils/firebaseSetup';
@@ -86,6 +86,15 @@ class UserService {
     } catch (error) {
       console.error('Error getting favorites:', error);
       return [];
+    }
+  }
+
+  async updateDiet(uid: string, diet: string) {
+    try {
+      const userDocRef = doc(firestore, this.tableName, uid);
+      await updateDoc(userDocRef, { diet });
+    } catch (error) {
+      console.error('Error updating user document:', error);
     }
   }
 }

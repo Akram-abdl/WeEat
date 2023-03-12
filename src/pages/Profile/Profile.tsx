@@ -6,6 +6,12 @@ import {
   Text,
   Stack,
   useColorModeValue,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  HStack,
+  Radio,
+  Button,
 } from '@chakra-ui/react';
 import { User as UserFirebase } from 'firebase/auth';
 import { auth } from '../../utils/firebaseSetup';
@@ -15,6 +21,7 @@ import UserService from '../../services/UserService';
 export default function Profile() {
   const currentUser: UserFirebase = auth.currentUser as UserFirebase;
   const [userData, setUserData] = useState<UserModel>();
+  const [diet, setDiet] = useState('');
   const bg = useColorModeValue('gray.100', 'gray.700');
 
   useEffect(() => {
@@ -23,6 +30,7 @@ export default function Profile() {
       // verify if data is not null then set it to userData
       if (data) {
         setUserData(data.data() as UserModel);
+        setDiet(data.data()?.diet || '');
       }
     }
 
@@ -31,10 +39,21 @@ export default function Profile() {
     }
   }, [currentUser]);
 
+  const handleDietChange = (value: string) => {
+    setDiet(value);
+  };
+
+  const handleSubmit = async () => {
+    if (userData) {
+      userData.diet = diet;
+      await UserService.updateDiet(currentUser.uid, userData.diet);
+    }
+  };
+
   return (
     <Center py={6}>
       <Box
-        maxW="320px"
+        maxW="390px"
         w="full"
         bg={bg}
         boxShadow="2xl"
@@ -56,15 +75,19 @@ export default function Profile() {
               <Text fontSize="md" fontWeight="bold" mb={2}>
                 Preference
               </Text>
-              <Text fontSize="sm">
-                Vegan :
-                {userData.isVegan ? 'Yes' : 'No'}
-              </Text>
-
-              <Text fontSize="sm" marginTop="2">
-                Vegetarian :
-                {userData.isVegetarian ? 'Yes' : 'No'}
-              </Text>
+              <FormControl>
+                <FormLabel htmlFor="diet">Diet:</FormLabel>
+                <RadioGroup id="diet" value={diet} onChange={handleDietChange}>
+                  <HStack spacing="24px">
+                    <Radio value="vegetarian">Vegetarian</Radio>
+                    <Radio value="vegan">Vegan</Radio>
+                    <Radio value=""> No Preference</Radio>
+                  </HStack>
+                </RadioGroup>
+                <Button mt={4} colorScheme="teal" onClick={handleSubmit}>
+                  Save
+                </Button>
+              </FormControl>
             </Box>
 
           </Stack>
