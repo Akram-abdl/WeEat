@@ -1,5 +1,5 @@
 import {
-  Box, Flex, Heading, Spinner, Stack, Image,
+  Box, Flex, Heading, Spinner, Stack, Image, ListItem, UnorderedList,
 } from '@chakra-ui/react';
 import React from 'react';
 import { useParams } from 'react-router-dom';
@@ -67,15 +67,26 @@ function Details() {
                 />
               </Box>
               <Stack pt={10} align="center">
+
                 <Heading fontSize="2xl" fontFamily="body" fontWeight={500}>
                   {recipeDetails.title}
                 </Heading>
+
                 <Heading fontSize="2xl" fontFamily="body" fontWeight={500}>
                   Ingredients
                 </Heading>
-                {recipeDetails.extendedIngredients.map((ingredient: Ingredient) => (
-                  <p>{ingredient.original}</p>
-                ))}
+
+                <UnorderedList>
+                  {recipeDetails.extendedIngredients.map((ingredient: Ingredient) => (
+                    <ListItem key={ingredient.original}>{ingredient.original}</ListItem>
+                  ))}
+                </UnorderedList>
+
+                <Heading fontSize="2xl" fontFamily="body" fontWeight={500}>
+                  Sommaire
+                </Heading>
+                <div dangerouslySetInnerHTML={{ __html: recipeDetails.summary }} />
+
                 <Heading fontSize="2xl" fontFamily="body" fontWeight={500}>
                   Instructions
                 </Heading>
