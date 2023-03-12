@@ -5,16 +5,21 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { getDetails } from '../../hooks/useSpoonacular';
 import { Ingredient } from '../../interfaces/Ingredient';
+import PageNotFound from '../Errors/PageNotFound';
 
 function Details() {
   const { id } = useParams();
 
-  if (!id) {
-    return <div>not found</div>;
+  if (!id || !+id) {
+    return (<PageNotFound />);
   }
 
   const recipeID = +id;
-  const { isLoadingRecipeDetails, recipeDetails } = getDetails(recipeID);
+  const { isLoadingRecipeDetails, recipeDetails, recipeDetailsError } = getDetails(recipeID);
+
+  if (recipeDetailsError) {
+    return (<PageNotFound />);
+  }
 
   return (
 
