@@ -10,6 +10,7 @@ const Register = React.lazy(() => import('./pages/Register/Register'));
 const Profile = React.lazy(() => import('./pages/Profile/Profile'));
 const Favorites = React.lazy(() => import('./pages/Favorites/Favorites'));
 const Search = React.lazy(() => import('./pages/Search/Search'));
+const Details = React.lazy(() => import('./pages/Details/Details'));
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
       {
         path: 'search',
         element: <Search />,
+      },
+      {
+        path: 'details/:id',
+        element: <Details />,
       },
       {
         path: '*',

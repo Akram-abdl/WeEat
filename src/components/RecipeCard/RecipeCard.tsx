@@ -1,7 +1,8 @@
 import React from 'react';
 import {
-  Stack, Heading, Image, Flex, Box,
+  Stack, Heading, Image, Flex, Box, Button,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import useUser from '../../hooks/useUser';
 import { Recipe } from '../../interfaces/Recipe';
 import RecipeHeartButton from '../RecipeHeartButton/RecipeHeartButton';
@@ -12,6 +13,8 @@ interface Props {
 
 function RecipeCard({ recipe }: Props) {
   const { favorites } = useUser();
+
+  const navigate = useNavigate();
 
   return (
     <Flex p={4} bg="white" boxShadow="md" borderRadius="md" width="20em" margin="1em">
@@ -65,7 +68,9 @@ function RecipeCard({ recipe }: Props) {
           <Heading fontSize="2xl" fontFamily="body" fontWeight={500}>
             {recipe.title}
           </Heading>
-
+          <Button variant="solid" colorScheme="teal" onClick={() => navigate(`/details/${recipe.id}`)}>
+            View recipe
+          </Button>
         </Stack>
       </Box>
     </Flex>

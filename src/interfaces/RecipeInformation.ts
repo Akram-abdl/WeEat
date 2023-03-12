@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { IngredientSchema } from './Ingredient';
 import { RecipeSchema } from './Recipe';
 
 export const RecipeInformationSchema = RecipeSchema.extend({
@@ -32,7 +33,7 @@ export const RecipeInformationSchema = RecipeSchema.extend({
   whole30: z.boolean().optional(),
   weightWatcherSmartPoints: z.number(),
   dishTypes: z.array(z.string()),
-  extendedIngredients: z.array(z.unknown()),
+  extendedIngredients: z.array(IngredientSchema),
   summary: z.string(),
   winePairing: z.unknown(),
 });

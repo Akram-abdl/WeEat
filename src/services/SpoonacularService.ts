@@ -48,6 +48,13 @@ class SpoonacularService {
     return recipesInformation;
   }
 
+  async searchRecipeInformation(recipeID: number): Promise<RecipeInformation> {
+    const data = await this.call(`recipes/${recipeID}/information?apiKey=${this.apiKey}`);
+
+    const recipesInformation = RecipeInformationSchema.parse(data);
+    return recipesInformation;
+  }
+
   async searchRandomRecipes(): Promise<RecipeInformation[]> {
     const parameters = { number: 5 };
     const data = await this.call('recipes/random', parameters);
@@ -70,8 +77,15 @@ class SpoonacularService {
     return ingredients;
   }
 
-  private async call(url: string, parameters: object) {
-    const response = await fetch(`${this.apiUrl}/${url}${this.createUrlParameters(parameters)}`);
+  private async call(url: string, parameters?: object) {
+    let response: Response;
+
+    if (parameters) {
+      response = await fetch(`${this.apiUrl}/${url}${this.createUrlParameters(parameters)}`);
+    } else {
+      response = await fetch(`${this.apiUrl}/${url}`);
+    }
+
     const data = await response.json();
     if (!response.ok) {
       if (!toast.isActive(warningID)) {
