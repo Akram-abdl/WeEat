@@ -1,0 +1,17 @@
+.flag {
+    object-fit: cover;
+}
+
+.flag:hover {
+    cursor: pointer
+}
+
+.flag.deactivated {
+    filter: brightness(80%)
+}
+
+.flag.activated {
+    cursor: default;
+    box-shadow: 0px 0px 3px 2px var(--chakra-colors-teal-500);
+    transition: 0.1s;
+}

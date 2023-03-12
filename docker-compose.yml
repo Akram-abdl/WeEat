@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  we-eat:
+    container_name: we-eat
+    image: we-eat
+    build:
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/app/src
+    ports:
+      - 5173:5173

@@ -4,7 +4,6 @@ module.exports = {
     es2021: true,
   },
   extends: [
-    'plugin:react/recommended',
     'airbnb',
     'airbnb-typescript'
   ],
@@ -18,7 +17,8 @@ module.exports = {
   plugins: [
     'react',
   ],
+  ignorePatterns: [".eslintrc.cjs"],
   rules: {
+    "max-len": ["error", { "code": 150, "ignoreComments": true, }],
   },
-  ignorePatterns: [".eslintrc.cjs"]
 };
