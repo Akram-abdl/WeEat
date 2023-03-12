@@ -14,7 +14,7 @@ function RecipeHStack({ recipes, maxCards }: Props) {
   return (
     <HStack alignItems="flex-start" justifyContent="center" gap="0.5rem">
       {recipes.slice(0, maxCards).map((recipe) => (
-        <RecipeCard recipe={recipe} />
+        <RecipeCard key={recipe.id} recipe={recipe} />
       ))}
     </HStack>
   );
