@@ -56,4 +56,16 @@ const useSpoonacular = () => {
   };
 };
 
+export const getDetails = (recipeID: number) => {
+  const {
+    isLoading: isLoadingRecipeDetails, data: recipeDetails,
+  } = useQuery(
+    ['spoonacular-recipe-details', recipeID],
+    () => SpoonacularService.searchRecipeInformation(recipeID),
+    { retry: false, refetchOnWindowFocus: false },
+  );
+
+  return { isLoadingRecipeDetails, recipeDetails };
+};
+
 export default useSpoonacular;
